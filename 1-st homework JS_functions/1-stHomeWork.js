@@ -103,18 +103,18 @@
 
 // ----------------------------------------Рішення такси 3----------------------------------------------------------------------------------
 
-let charPosition = [
-  "першій",
-  "другій",
-  "третій",
-  "четвертій",
-  "п'ятій",
-  "шостій",
-  "сьомій",
-  "восьмій",
-  "дев'ятій",
-  "десятій"
-];
+// let charPosition = [
+//   "першій",
+//   "другій",
+//   "третій",
+//   "четвертій",
+//   "п'ятій",
+//   "шостій",
+//   "сьомій",
+//   "восьмій",
+//   "дев'ятій",
+//   "десятій"
+// ];
 
 
 // let game = function () {
@@ -122,12 +122,15 @@ let charPosition = [
 //   let charArray = askedWords.split('');
 //   console.log(charArray);
 //   let errorsCounter = 0;
-//   if (errorsCounter < 5) {
+//   if (errorsCounter < 2) {
 //     for (let i = 0; i < charArray.length; i++) {
 //       let supousedChar = prompt('Як гадаєш яка буква на' + charPosition[i] + ' позиції у загаданому слові?');
 //       if (charArray[i] === supousedChar) {
 //         alert('Вірно, переходим до наступної букви');
-//       }; if (errorsCounter == 5) {
+//       };  if (charArray[i] !== supousedChar) {
+//         alert('невгадав')
+//         errorsCounter += errorsCounter;
+//       }; if (errorsCounter == 2) {
 //         alert('You lose!');
 //         break
 //       } else {errorsCounter += errorsCounter};
@@ -144,21 +147,108 @@ let charPosition = [
 // };
 
 // ------------------------------------------------Кінець рішення таски 3-------------------------------------------------------------------
+
+
+
+
+
+
+
 // ------------------------------------------------2-гий варіант рішення таски 3------------------------------------------------------------
 
-let gameAcceptQestion = function (str) {
-  if (str) {
-    game ()
-  } else {
-    console.log(false)
-  }
-}
+// let gameAcceptQestion = function (str) {
+//   while (str) {
+//     str = getWord()
+//   }
+// }
 
-let game = function () {
-  alert("function is working")
-}
+// let getWord = function () {
+//   let newWord = prompt('Загадай слово');
+//   if (!newWord || newWord===Number) {
+//     return console.error ("Потрібно ввести слово")
+//     } else {
+//       let charArray = newWord.split('')
+//       return charArray
+//     }
+// }
+  
+// let getChar = function () {
+//   let getChar = prompt('Введіть букву')
+//   if (!getChar) {
+//     console.error('необхідно ввести одну букву')
+//   }
+//   if (get = Number) {
+//     console.error('необхідно ввести саме одну букву')
+//   }
+// }
 
-gameAcceptQestion (confirm("dude, do you want play the game?"));
+// gameAcceptQestion (confirm("dude, do you want play the game?"));
 // ------------------------------------------------Кінець 2-гого варіанту рішення таски 3---------------------------------------------------
 
+
+
+
+
+
+// ------------------------------------------------3-тій варіант рішення таски 3 (максимально намагався циклами)------------------------------------------------------------
+let word = "буй"
+console.log (word)
+
+let supousedChar = prompt('Загадайте букву')
+
+let guessedChar = ""
+let erorrCounter = 0
+
+
+while (supousedChar) {
+  // debugger
+  for (let char of word) {
+    let boolFlag = false
+    if (char === supousedChar) {
+      boolFlag = true
+      console.log(boolFlag);
+      word = word.slice(1, word.length)
+    } 
+    if (!boolFlag) {
+      erorrCounter ++
+      alert("Кількість помилок " + erorrCounter);
+      break
+    }
+    if(boolFlag && guessedChar.indexOf(supousedChar) === -1) { // ця штука, вроде працює (не чіпати поки)
+      guessedChar = guessedChar + supousedChar
+      alert(guessedChar)
+      break
+    }
+  }
+  if(erorrCounter < 4) {
+    supousedChar = prompt('Загадайте букву')
+  } else { alert ("You lose")}
+}
+// ------------------------------------------------Кінець 3-ого варіанту рішення таски 3---------------------------------------------------
+
+
+
+
+
+
+
+
+// let word = "gogetta"
+// for (let i = 0; i < word.length; i++){
+//   console.log(word[i])
+// }
+
+
+
+// // в коді нижче змінна "bykva" чомусь не бачиться у серезині циклу, питання - чому так (10.04.2023 23-48 не вірішено)
+// let word = "котік"
+// debugger
+// let bykva = prompt("жени букву!")
+
+// for (let char of word) {
+//   if (char === bykva) {
+//     console.log('прапвильно, Пес, а ти кмітливий!')
+//   }
+//   let bykva = prompt("жени букву!")
+// }
 
