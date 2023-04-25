@@ -1,124 +1,94 @@
-// ---------task #1-------------------
+// ## TASK-01
 const without = function (object, propertyName) {
+  // створення функції, яка приймає два параметри (обєкт та ключ властивості)
   for (let prop in object) {
+    // в умові цикла створюємо змінну prop та передаємо обєкт який передали аргументом у функцію
     if (prop === propertyName) {
-      object[propertyName] = null
+      //оскільки цикл in то ми проходимось по ключам обєкта і шукаємо співпадіння з передеаною аргументом зміною propertyName
+      object[propertyName] = null; // якщо умова ifу спрацювала то ми предаємо відповідному ключу нове значення, в данному випадку null
     }
   }
-  return object
-}
-const data = { login: 'gogi', password: 'GloryOfUkraine', address: 'Kyiv' }
-console.log(without(data, 'address'))
-
+  return object; // після завершення циклу (коли ми пройшли по всім властивостям) ретерном функції є обєкт (або оригінал, апо відредагований, при умові спрацювання іфу)
+};
+const data = { login: 'gogi', password: 'GloryOfUkraine', address: 'Kyiv' }; // приклад обєкту для передачі у функцію
+console.log(without(data, 'address')); // виклик функції з потрібними аргументами
 
 // ## TASK-02
-// Написати функцію `profileMagazine`, яка повертає обʼєкт інтернет-магазину з додатковими методами по роботі з ним.
 
-// #### Arguments:
-// - _label_ - назва магазину
-// - _schedule_ - розклад роботи
-// - _products_ - масив продуктів, наявних на складі
-// #### Return value
-// Обʼєкт інтернет магазину, у якого наявні одноїменні аргументам властивості, а також 2 методи - `makeBlackFriday`, `verifySore`
-
-// ## метод `makeBlackFriday`
-// Перебрати увесь масив товарів, для кожного товару вирахувати нову ціну, просто перемноживши стару ціну на розмір знижки.
-
-// #### Arguments:
-// - _discount_ - розмір знижки числом від 0 до 1
-
-// #### Return value
-// Відсутнє
-
-// ## метод `verifyStore`
-// Метод має "пробігати" по усім товарам магазину, та для кожного звіряти його кількість з таким самим товаром на складі.
-// Якщо кількість товару у магазині не збігається - переназначити її таку ж як на складі.
-
-// #### Arguments:
-// - _store_ - массив товарів на складі
-
-// #### Return value
-// Строка зі списком назв товарів кількість яких не зпівпала з наявністю у магазині.
-
-let KysiaShopProducts = [
+let kysiaShopProducts = [
+  // Массив, що містить в собі товари (обєкти) що є в магазині
   {
     name: 'Brit care',
     price: 50,
-    stock: 70
+    stock: 70,
   },
   {
     name: 'whiskas',
     price: 40,
-    stock: 30
+    stock: 30,
   },
   {
     name: 'kotyachi sneki',
     price: 100,
-    stock: 15
+    stock: 15,
   },
   {
     name: 'Мяв',
     price: 20,
-    stock: 0
-  }
-]
+    stock: 0,
+  },
+];
 
 let productsOnStorage = [
+  // Массив, що містить в собі товари (обєкти) що є на складі
   {
     name: 'Brit care',
     price: 50,
-    stock: 100
+    stock: 100,
   },
   {
     name: 'whiskas',
     price: 40,
-    stock: 25
+    stock: 25,
   },
   {
     name: 'kotyachi sneki',
     price: 100,
-    stock: 45
+    stock: 45,
   },
   {
     name: 'Мяв',
     price: 20,
-    stock: 200
-  }
-]
+    stock: 200,
+  },
+];
 
-function profileMagazine (label, schedule, products = []) {
-
+function profileMagazine(label, schedule, products = []) {
+  // оголошення функції яка приймає агрументами 2 рядки та один масив
   const makeBlackFriday = function (discount) {
+    // Оголошення функції, яка є методом створеного у ретерні обєкту
     for (let product of this.products) {
-      discountedPrice = product.price * discount
+      // цикл фор оф, оголошуємо в ньому змінну product (в цю змінну прилітає обєкт з масиву товарів) і передаємо у цикл масив продуктів. Оскільки функція makeBlackFriday є методом обєкту створеного який повертає функція profileMagazine то ми за допомогою this оголошуемо, що працюемо з масивом товарів, який лежить у ретюрні profileMagazine
+      discountedPrice = product.price * discount; // на кожній ітерації циклу в кожному обєкті змінюємо значення, яке лежить під ключем price просто перемножаемо його на значення discount
     }
-  }
-  // const verifyStore = function (store = []) {
-  //   let balanceShop = 0
-  //   let balanceStore = 0
-  //   for (let key of this.products) {
-  //     balanceShop = key.stock
-  //     console.log(balanceShop)
-  //   }
-  //   for (let key of productsOnStorage) {
-  //     balanceStore = key.stock
-  //     console.log(balanceStore)
-  //   }
-  // }
-
-    const verifyStore = function (store = []) {
-    let balanceShop = 0
-    let balanceStore = 0
-    for (let key of this.products) {
-      balanceShop = key.stock
-      if (key = stock)
-      console.log([stock])
-    }
-    for (let key of productsOnStorage) {
-      balanceStore = key.stock
-      console.log(balanceStore)
-    }
-  }
+  };
+  const verifyStore = function (storageItems = []) {
+    // Оголошуємо функцію, яка є медодом створеного за допомогою функції profileMagazine обєкту,
+    // product - Об'єкт одного з продуктів у магазині
+    this.products.forEach((product) => {
+      //звертаємось до products за допомогою this оскільки verifyStore та products є частиною одного обєкту в ретюрн. Для products викликаємо метод масивів forEach (метод який виконує функцію для кожного з елементів масиву). В форИч аргументом колбек функції прилітає product, яка приймае в себе по черзі обєкти продуктів в магазині
+      //storageProduct - Об'єкт одного з продуктів на складі
+      debugger;
+      let targetStorageProduct = storageItems.find(
+        // це перший рядок тіла колл бек функції в forEach. Тут оголошуемо змінну targetStorageProduct яка в себе прийме результат (знайдений обєкт з масиву storageItems), оскільки метод файнд повертає перший елемент масиву, який відповідає умові у колбек функції
+        (storageProduct) => product.name === storageProduct.name //стрілкова функція, в якій оголошенно змінну storageProduct, значення якої прилетить у targetStorageProduct. Функція приймає в себе product з 78 рядка, і пробігає по масиву storageItems шукаючи обєкт із однаковим ключем name.
+      );
+      if (product.stock !== targetStorageProduct.stock) {
+        // Після того як ми знайшли на 84 рядку 2 відповідних обєкти в 2-х масивах ми за допомогою розгалудження іф перевіряємо значення їх ключів "stock", якщо ці значення не дорівнюють...
+        product.stock = targetStorageProduct.stock; // то зняченню stock в магазині присвоюемо значення stock зі складу
+      }
+    });
+  };
 
   return {
     label,
@@ -126,10 +96,15 @@ function profileMagazine (label, schedule, products = []) {
     products,
 
     makeBlackFriday,
-    verifyStore
-  }
+    verifyStore,
+  };
 }
 
-let KysiaShop = profileMagazine ('KysiaShop', "mon-fri 7am- 6pm", KysiaShopProducts)
-console.log(KysiaShop)
-console.log(KysiaShop.verifyStore(productsOnStorage))
+let kysiaShop = profileMagazine(
+  // Оголошення змінної яка містить в собі виклик функції profileMagazine
+  'KysiaShop', // назва магазину, яка передається аргументом у функцію
+  'mon-fri 7am- 6pm', //  розклад, передається аргументом у функцію
+  kysiaShopProducts // масив товарів, який передається аргументом у функцію. Товари які буде містити в собі магазин
+);
+
+kysiaShop.verifyStore(productsOnStorage); //виклик методу verifyStore для створеного, за допомогою функції profileMagazine обєкту магазину
