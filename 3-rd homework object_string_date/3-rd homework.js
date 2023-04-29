@@ -51,13 +51,15 @@ function profileMagazine(
   schedule,
   products = [],
   description,
-  startSaleDate
+  startSaleDate,
+  team
 ) {
   const makeBlackFriday = function (discount) {
     for (let product of this.products) {
       discountedPrice = product.price * discount;
     }
   };
+
   const verifyStore = function (storageItems = []) {
     this.products.forEach((product) => {
       let targetStorageProduct = storageItems.find(
@@ -72,11 +74,7 @@ function profileMagazine(
     let lengthSourceText = text.length;
     if (lengthSourceText > maxLength) {
       let splittedString = text.split('');
-      let cuttedString = splittedString.splice(
-        maxLength,
-        splittedString.length - 1,
-        '...'
-      );
+      splittedString.splice(maxLength, splittedString.length - 1, '...');
       text = splittedString.join('');
     }
     console.log(text);
@@ -93,11 +91,28 @@ function profileMagazine(
     }
   };
 
-  const checkDaytoSale = function (startSaleDate) {
-    let date = new Date();
-    let salesStart = new Date();
-    salesStart.setDate(startSaleDate);
-    console.log(date.getDay);
+  const checkDayToSale = function (startSaleDate) {
+    let todayDate = new Date();
+    todayDate.setHours(0);
+    let salesStartDate = new Date(startSaleDate);
+    let floatToSalesBeginning = (salesStartDate - todayDate) / 86400000;
+    let daysToSalesBeginning = Math.round(floatToSalesBeginning);
+    return daysToSalesBeginning;
+  };
+
+  const prepareInventory = function () {
+    let allProductsStock = 0;
+    this.products.forEach((product) => {
+      if (product.stock > 0) {
+        allProductsStock = allProductsStock + product.stock;
+      }
+    });
+
+    let doesTeamEnough =
+      allProductsStock / (this.team * 10 * this.checkDayToSale);
+    if (doesTeamEnough >= 1) {
+      return true;
+    }
   };
 
   return {
@@ -106,22 +121,29 @@ function profileMagazine(
     products,
     description,
     startSaleDate,
+    team,
 
     makeBlackFriday,
     verifyStore,
     ellipsisText,
     censorshipCheck,
-    checkDaytoSale,
+    checkDayToSale,
+    prepareInventory,
   };
 }
 
 let kysiaShop = profileMagazine(
   'KysiaShop',
   'mon-fri 7am- 6pm',
-  kysiaShopProducts
+  kysiaShopProducts,
+  'KysiaShop - це суперсучасний магазин товарів для ваших вихованців, каптажників, буханок, булочок, шорстявих піздюків... Нам байдуже якими словами ви висоловлюєте любов до свого улюбленця... Ми його любимо не менше ніж ви самі...',
+  '05.26.023',
+  5
 );
 
 kysiaShop.verifyStore(productsOnStorage);
-kysiaShop.ellipsisText('Avada Kedavra, Gogi', 13);
+kysiaShop.ellipsisText('Avada Kedavra, Gogi', 16);
 kysiaShop.censorshipCheck('Avada Kedavra, Gogi Kedavra', 'Kedavra');
-kysiaShop.checkDaytoSale('22.07.2023');
+console.log(kysiaShop.checkDayToSale('05.26.2023'));
+console.log(kysiaShop.prepareInventory());
+console.log(kysiaShop);
