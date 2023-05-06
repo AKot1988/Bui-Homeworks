@@ -109,7 +109,7 @@ function profileMagazine(
     });
 
     let doesTeamEnough =
-      allProductsStock / (this.team * 10 * this.checkDayToSale);
+      allProductsStock / (this.team * 10 * this.checkDayToSale());
     if (doesTeamEnough >= 1) {
       return true;
     }
