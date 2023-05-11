@@ -23,10 +23,11 @@ console.log(reverseArray(exampleArray));
 // ## TASK-03
 const mergeArrays = (firstArray, secondArray) => {
   mergedUnfilteredArray = firstArray.concat(secondArray);
+  debugger;
   mergedFilteredArray = mergedUnfilteredArray.filter(
     (el, id) => mergedUnfilteredArray.indexOf(el) === id
   );
   mergedFilteredArray.sort((a, b) => a - b);
   return mergedFilteredArray;
 };
-console.log(mergeArrays(arr1, arr2));
+console.log(mergeArrays([1, 3, 5, 7, 9, 11, 12], [1, 2, 3, 4, 5, 10, 12]));
