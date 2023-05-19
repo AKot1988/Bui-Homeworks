@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DOM Events</title>
+    <style>
+      body {
+        width: 100vw;
+        height: 100vh;
+      }
+
+      .tabs__item {
+        margin: 10px 0;
+      }
+
+      .tabs__item--active {
+        background-color: darkred;
+        color: #f3f3f3;
+      }
+
+      .tabs-content__item {
+        display: none;
+      }
+
+      .tabs-content__item--active {
+        display: block;
+      }
+
+      .follow-cursor {
+        position: absolute;
+      }
+
+      .follow-cursor--delay {
+        transition: top 0.2s, left 0.2s;
+      }
+
+      .illustration {
+        width: 70px;
+        height: 70px;
+        object-fit: contain;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="btnsList">
+      <button id="clickMe">Click me</button>
+      <button id="hitMe">Hit me</button>
+      <button id="pushMe">Push me</button>
+    </div>
+    <main class="container">
+      <ul class="tabs">
+        <li class="tabs__item tabs__item--active" data-tab="gogi">Gogi</li>
+        <li class="tabs__item" data-tab="loves">Loves</li>
+        <li class="tabs__item" data-tab="to">To</li>
+        <li class="tabs__item" data-tab="code">Code</li>
+      </ul>
+      <div class="tabs-content">
+        <div
+          class="tabs-content__item tabs-content__item--active"
+          data-tab="gogi"
+        >
+          1 -Гогі - стародавнє грузинське чоловіче ім'я
+        </div>
+        <div class="tabs-content__item" data-tab="loves">
+          2 -Любити - відчувати щось до когось\чогось
+        </div>
+        <div class="tabs-content__item" data-tab="to">
+          3 - щось для чогось, щоб повязати
+        </div>
+        <div class="tabs-content__item" data-tab="code">
+          4 -Робити саме те, що я намагаюсь робити
+        </div>
+      </div>
+    </main>
+    <script src="./Повторюю таски з вебінара №10 (mouse events).js"></script>
+  </body>
+</html>

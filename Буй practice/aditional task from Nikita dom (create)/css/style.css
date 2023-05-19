@@ -1,0 +1,7 @@
+.main__header span {
+  color: red;
+}
+
+.main__header--secondary--color span {
+  color: teal;
+}
