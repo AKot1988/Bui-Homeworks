@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="menu__container">
+      <ul class="menu__section">
+        <li class="menu__item"><a href="#">Main</a></li>
+        <li class="menu__item"><a href="#">Stuff</a></li>
+        <li class="menu__item"><a href="#">Goods</a></li>
+        <li class="menu__item"><a href="#">Contacts</a></li>
+        <li class="menu__item"><a href="#">Gogi</a></li>
+      </ul>
+      <div class="burger__menu">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+          <path
+            d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"
+          />
+        </svg>
+        <div class="popUpMenu">
+          <li class="popUpMenuItem"><a href="#">Main</a></li>
+          <li class="popUpMenuItem"><a href="#">Stuff</a></li>
+          <li class="popUpMenuItem"><a href="#">Goods</a></li>
+          <li class="popUpMenuItem"><a href="#">Contacts</a></li>
+          <li class="popUpMenuItem"><a href="#">Gogi</a></li>
+        </div>
+      </div>
+      <!-- <picture>
+        <source
+          srcset="./svg/bars-solid svg.svg"
+          class="burger__menu--closed"
+          media="min-width: 768px" 
+        />
+        <img
+          srcset="./svg/square-caret-down-solid.svg"
+          class="burger__menu--opened"
+        />
+      </picture> -->
+    </div>
+
+
+    <h1 class="title"></h1>
+    <div class="keyboard">
+      <ul class="row row-0">
+        <li class="pinky" data-value="esc">ESC</li>
+        <li class="pinky" data-value="back">BACK</li>
+      </ul>
+      <ul class="row row-1">
+        <li class="pinky" data-value="tab">TAB</li>
+        <li class="pinky" data-value="Q">Q</li>
+        <li class="ring" data-value="W">W</li>
+        <li class="middle" data-value="E">E</li>
+        <li class="pointer1st" data-value="R">R</li>
+        <li class="pointer2nd" data-value="T">T</li>
+        <li class="pointer2nd" data-value="Y">Y</li>
+        <li class="pointer1st" data-value="U">U</li>
+        <li class="middle" data-value="I">I</li>
+        <li class="ring" data-value="O">O</li>
+        <li class="pinky" data-value="P">P</li>
+        <li class="pinky">[</li>
+        <li class="pinky">]</li>
+        <li class="pinky">\</li>
+      </ul>
+      <ul class="row row-2">
+        <li class="pinky" data-value="caps">CAPS</li>
+        <li class="pinky" data-value="A">A</li>
+        <li class="ring" data-value="S">S</li>
+        <li class="middle" data-value="D">D</li>
+        <li class="pointer1st" data-value="F">F</li>
+        <li class="pointer2nd" data-value="G">G</li>
+        <li class="pointer2nd" data-value="H">H</li>
+        <li class="pointer1st" data-value="J">J</li>
+        <li class="middle" data-value="K">K</li>
+        <li class="ring" data-value="L">L</li>
+        <li class="pinky">:</li>
+        <li class="pinky">''</li>
+        <li class="pinky" data-value="enter">ENTER</li>
+      </ul>
+      <ul class="row row-3">
+        <li class="pinky" data-value="left-shift">SHIFT</li>
+        <li class="pinky" data-value="Z">Z</li>
+        <li class="ring" data-value="X">X</li>
+        <li class="middle" data-value="C">C</li>
+        <li class="pointer1st" data-value="V">V</li>
+        <li class="pointer2nd" data-value="B">B</li>
+        <li class="pointer2nd" data-value="N">N</li>
+        <li class="pointer1st" data-value="M">M</li>
+        <li class="middle">,</li>
+        <li class="ring">.</li>
+        <li class="pinky">;</li>
+        <li class="pinky" data-value="right-shift">SHIFT</li>
+      </ul>
+    </div>
+    <script src="./7-th homework mouse events.js"></script>
+  </body>
+</html>
