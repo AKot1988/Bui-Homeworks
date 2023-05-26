@@ -47,3 +47,22 @@ tabsList.addEventListener('click', (event) => {
  * Положення картинки Джеррі задається координатами миші.
  * Положення картинки Тома задається теж координатами миші, але із затримкою, щоб дати гравцю можливість втікти.
  */
+
+const mockedJerryCursor = document.createElement('img');
+const mockedTomCursor = document.createElement('img');
+mockedJerryCursor.src = './img/jerry.png';
+mockedTomCursor.src = './img/tom.png';
+
+mockedJerryCursor.classList.add('jerry__cursor');
+mockedJerryCursor.classList.add('cursor__image');
+mockedTomCursor.classList.add('tom__cursor');
+mockedTomCursor.classList.add('cursor__image');
+document.body.prepend(mockedJerryCursor, mockedTomCursor);
+
+document.body.addEventListener('mousemove', (event) => {
+  mockedJerryCursor.style.left = event.clientX + 'px';
+  mockedJerryCursor.style.top = event.clientY + 'px';
+
+  mockedTomCursor.style.left = event.clientX + 'px';
+  mockedTomCursor.style.top = event.clientY + 'px';
+});
