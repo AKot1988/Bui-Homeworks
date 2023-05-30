@@ -3,6 +3,10 @@ html {
   width: 100vw;
   height: 100vh;
 }
+body {
+  width: 100vw;
+  height: 100vh;
+}
 
 .menu__container {
   display: flex;
@@ -14,6 +18,13 @@ html {
   justify-content: space-around;
   align-items: center;
   background-color: teal;
+}
+
+.keyboard__container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 100px auto 50px;
+  justify-content: center;
 }
 
 .menu__section {
@@ -108,6 +119,11 @@ html {
 	list-style: none;
 	display: flex;
 }
+
+a {
+  cursor: none;
+}
+
 li {
 	height: 3em;
 	width: 3em;
@@ -119,7 +135,9 @@ li {
 	transition: 0.3s;
 	text-align: center;
 	font-size: 1em;
+  
 }
+
 #tab {
 	width: 5em;
 }

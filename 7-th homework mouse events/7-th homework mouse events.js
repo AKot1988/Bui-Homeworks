@@ -15,6 +15,19 @@ document.body.addEventListener('mousemove', (e) => {
   mockedCursor.style.top = e.pageY + 'px';
 });
 
-const keyTorch = document.addEventListener('keydown', (event) => {
+//Task #3
+
+document.addEventListener('keydown', (event) => {
   console.log(event);
+  let buttonValue = event.key.toLowerCase();
+  let controlButtonValue = event.code;
+  console.log(event);
+  liCollection = document.querySelectorAll('li');
+  for (searchButton of liCollection) {
+    if (searchButton.innerText.toLowerCase() === buttonValue) {
+      searchButton.classList.toggle('hit');
+    } else if (searchButton.dataset.value === controlButtonValue) {
+      searchButton.classList.toggle('hit');
+    }
+  }
 });
