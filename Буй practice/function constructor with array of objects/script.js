@@ -144,28 +144,92 @@ function CreateToDoList(listNumber, priority, title, isDone) {
 
 CreateToDoList.prototype.render = function (parent) {
   parent.append(this.elements.eventContainer);
-  this.elements.eventContainer.append(this.elements.eventNumber, this.elements.eventPriority, this.elements.eventName, this.elements.eventReady)
-  
-  this.elements.eventNumber.innerText = this.listNumber,
-  this.elements.eventPriority.innerText = this.priority,
-  this.elements.eventName.innerText = this.title,
-  this.elements.eventReady.innerText = this.isDone
-}
+  this.elements.eventContainer.append(
+    this.elements.eventNumber,
+    this.elements.eventPriority,
+    this.elements.eventName,
+    this.elements.eventReady
+  );
 
-const createToDoList1 = new CreateToDoList ('1', 'Важливо дуже! Піздец прям', 'доробити дз по івентам', 'ні')
-createToDoList1.render(document.querySelector('.containerEvents'))
+  (this.elements.eventNumber.innerText = this.listNumber),
+    (this.elements.eventPriority.innerText = this.priority),
+    (this.elements.eventName.innerText = this.title),
+    (this.elements.eventReady.innerText = this.isDone);
+};
 
-
+const createToDoList1 = new CreateToDoList(
+  '1',
+  'Важливо дуже! Піздец прям',
+  'доробити дз по івентам',
+  'ні'
+);
+createToDoList1.render(document.querySelector('.containerEvents'));
 
 // * 3) Мобільний телефон:
 // * параметри: назва, процесор, ОЗУ, розмір екрану, ціна
-function CellPhoneProductCard(model, picture, stone, RAM, screenSize, price) {
-  this.model = model;
-  this.picture = picture;
-  this.stone = stone;
-  this.RAM = RAM;
-  this.screenSize = screenSize;
-  this.price = price;
+
+// name: 'Samsung Galaxy s23 ultra',
+// imgSourse: './img/cell phones/s 23 ultra.jpg',
+// processor: 'snapdragon 500gen',
+// cellPhoneRAM: '12GB',
+// screenSize: '7"',
+// stockPrice: '1300 usd',
+
+let mobilePhoneModelsStoreArray = [
+  {
+    name: 'Samsung Galaxy s23 ultra',
+    imgSourse: './img/cell phones/s 23 ultra.jpg',
+    processor: 'snapdragon 500gen',
+    cellPhoneRAM: '12GB',
+    screenSize: '7"',
+    stockPrice: '1300 usd',
+  },
+
+  {
+    name: 'IPhone 14 PRO MAX',
+    imgSourse: './img/cell phones/pro max 14.webp',
+    processor: 'm2',
+    cellPhoneRAM: '12GB',
+    screenSize: '7"',
+    stockPrice: '1200 usd',
+  },
+
+  {
+    name: 'Sony xperia EXP',
+    imgSourse:
+      './img/cell phones/smartfon-sony-xperia-1-iv-256gb12gb-black-58761668140313.webp',
+    processor: 'Exynos',
+    cellPhoneRAM: '8GB',
+    screenSize: '5"',
+    stockPrice: '900usd',
+  },
+
+  {
+    name: 'Xiaomi FlagMan Phone',
+    imgSourse: './img/cell phones/xiaomi.avif',
+    processor: 'Exynos',
+    cellPhoneRAM: '8GB',
+    screenSize: '5.5"',
+    stockPrice: '6500usd',
+  },
+
+  {
+    name: 'Zalupa Phone',
+    imgSourse: './img/cell phones/Залупа фонг.webp',
+    processor: 'Чіп від калькулятора CITIZEN',
+    cellPhoneRAM: '15 kB',
+    screenSize: '0.5"',
+    stockPrice: '15usd',
+  },
+];
+
+function CellPhoneProductCard(product) {
+  this.model = product.name;
+  this.picture = product.imgSourse;
+  this.stone = product.processor;
+  this.RAM = product.cellPhoneRAM;
+  this.screenSize = product.screenSize;
+  this.price = product.stockPrice;
 
   this.elements = {
     cellPhoneCard: document.createElement('div'),
@@ -181,7 +245,6 @@ function CellPhoneProductCard(model, picture, stone, RAM, screenSize, price) {
 }
 
 CellPhoneProductCard.prototype.render = function (parent) {
-  parent.appendChild(this.elements.cellPhoneCard);
   this.elements.cellPhoneCard.append(
     this.elements.modelName,
     this.elements.modelPicture,
@@ -217,79 +280,43 @@ CellPhoneProductCard.prototype.render = function (parent) {
     const buyBtn = event.target;
     if (buyBtn.tagName === 'BUTTON') {
       console.log('ти додав товар у корзину');
+      console.log(this);
     }
   });
+  parent.appendChild(this.elements.cellPhoneCard);
 };
 
-const samGalUltra23 = new CellPhoneProductCard(
-  'Samsung Galaxy s23 ultra',
-  './img/cell phones/s 23 ultra.jpg',
-  'snapdragon 500gen',
-  '12GB',
-  '7"',
-  '1300 usd'
-);
-const iph14ProMax = new CellPhoneProductCard(
-  'IPhone 14 PRO MAX',
-  './img/cell phones/pro max 14.webp',
-  'm2',
-  '12GB',
-  '7"',
-  '1200 usd'
-);
-const sonyXperia = new CellPhoneProductCard(
-  'Sony xperia EXP',
-  './img/cell phones/smartfon-sony-xperia-1-iv-256gb12gb-black-58761668140313.webp',
-  'Exynos',
-  '8GB',
-  '5"',
-  '900usd'
-);
-const xiaomi = new CellPhoneProductCard(
-  'Xiaomi FlagMan Phone',
-  './img/cell phones/xiaomi.avif',
-  'Exynos',
-  '8GB',
-  '5.5"',
-  '6500usd'
-);
-const somePhone = new CellPhoneProductCard(
-  'Zalupa Phone',
-  './img/cell phones/Залупа фонг.webp',
-  'Чіп від калькулятора CITIZEN',
-  '15 kB',
-  '0.5"',
-  '15usd'
-);
+const someGoodMaps = mobilePhoneModelsStoreArray.map((element) => {
+  return new CellPhoneProductCard(element);
+});
 
-samGalUltra23.render(document.querySelector('.containerWithCellPhones'));
-iph14ProMax.render(document.querySelector('.containerWithCellPhones'));
-sonyXperia.render(document.querySelector('.containerWithCellPhones'));
-xiaomi.render(document.querySelector('.containerWithCellPhones'));
-somePhone.render(document.querySelector('.containerWithCellPhones'));
+console.log(someGoodMaps);
 
-// //examples 22.05.2023 individual work with Nick
-// function ProductCard(title, description, price) {
-//   this.title = title;
-//   this.description = description;
-//   this.price = price;
+someGoodMaps.forEach((card) => {
+  console.log(card);
+  card.render(document.getElementsByClassName('containerWithCellPhones')[0]);
+});
+console.log(someGoodMaps);
 
-//   this.elements = {
-//     card: document.createElement('div'),
-//     title: document.createElement('h3'),
-//     description: document.createElement('p'),
-//     price: document.createElement('p'),
-//   };
-//   console.log('inside the constructor ---> ', this.title);
+// function CellPhoneProductsRow(rowParent, phoneArray) {
+//   this.parent = rowParent;
+//   const phoneCards = phoneArray.map((element) => {
+//     return new CellPhoneProductCard(element);
+//   });
+//   this.cards = phoneCards;
 // }
 
-// ProductCard.prototype.render = function () {
-//   console.log('inside the prototype method ---> ', this.title);
+// CellPhoneProductsRow.prototype.render = function () {
+//   this.cards.forEach((card) => {
+//     card.render(this.parent);
+//   });
 // };
 
-// const testObject = new ProductCard('gogi item', 'best', Infinity);
-// testObject.render();
-// console.log(
-//   'outside the constructor, after creating a variable ---> ',
-//   testObject.title
+// let productsParent = document.getElementsByClassName(
+//   'containerWithCellPhones'
+// )[0];
+// const phonesRow = new CellPhoneProductsRow(
+//   productsParent,
+//   mobilePhoneModelsStoreArray
 // );
+// phonesRow.render();

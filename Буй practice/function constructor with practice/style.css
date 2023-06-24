@@ -1,0 +1,68 @@
+.containerWithBalls,
+.containerWithCellPhones,
+.containerEvents {
+  max-width: 1280px;
+  margin: 100px auto;
+  /* display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-auto-rows: 200px;
+  gap: 50px; */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 50px;
+}
+
+.productCard {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  flex-direction: column;
+  width: 150px;
+  height: 350px;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 5px 5px 5px rgb(107, 112, 112);
+  border-radius: 10px;
+  transition: 0.2s linear;
+}
+
+.productCard:hover {
+  box-shadow: 10px 5px 5px rgb(107, 112, 112);
+}
+
+.productTitle {
+  padding-right: 10px;
+  font-weight: 400px;
+  font-size: 18px;
+}
+.productPhoto {
+  width: 100px;
+  height: 100px;
+  object-fit: scale-down;
+  align-self: center;
+}
+.productDescription {
+  padding-right: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
+  align-items: center;
+  margin: 0px;
+}
+.productRadius {
+  font-weight: 400px;
+  font-size: 16px;
+}
+.productColor {
+  font-weight: 400px;
+  font-size: 16px;
+}
+.productWeight {
+  font-weight: 400px;
+  font-size: 16px;
+}
+.productPrice {
+  padding-right: 10px;
+  justify-content: end;
+  font-weight: 400px;
+  font-size: 18px;
+}

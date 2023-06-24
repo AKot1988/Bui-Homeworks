@@ -1,0 +1,77 @@
+.nav__section {
+  max-width: 1440px;
+  min-height: 100px;
+  margin: 0px auto;
+  padding-bottom: 50px;
+  background-color: #e6e6e6;
+  display: flex;
+  justify-content: space-between;
+}
+
+.plants__section {
+  max-width: 1440px;
+  min-height: 100px;
+  margin: 0px auto;
+  background-color: #e6e6e6;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.logo__image {
+  display: block;
+  width: 150px;
+  height: 150px;
+  background-size: cover;
+  margin-left: 50px;
+}
+
+.menu__section {
+  max-width: 500px;
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  gap: 15px;
+  align-items: center;
+  margin-right: 50px;
+}
+
+.plants__section__card--item {
+  margin: 30px;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 5px 5px 5px rgb(107, 112, 112);
+  border-radius: 10px;
+}
+
+.plants__section__card--description {
+  width: 150px;
+  height: 200px;
+  overflow-y: hidden;
+}
+
+.plants__section__card--image {
+  display: block;
+  width: 150px;
+  height: 150px;
+  background-image: cover;
+  object-fit: scale-down;
+}
+
+.cart__section {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(251, 0, 197, 0.534);
+}
