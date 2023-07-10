@@ -19,7 +19,6 @@ export default function PlantCard(plant, isInCart = false) {
     plantImage: document.createElement('img'),
     plantDescription: document.createElement('p'),
     plantPrice: document.createElement('p'),
-    plantButtonToCard: document.createElement('button'),
   };
 }
 

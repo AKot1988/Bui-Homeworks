@@ -22,10 +22,74 @@ html {
   /* background-color: teal; */
 }
 
+.user__info {
+  margin: 15px;
+}
+
 .displayedSeconds {
-  width: 50px;
+  border-style: 3px double #ff0000 solid;
+  width: 150px;
   height: 50px;
   font-size: 32px;
   font-weight: bold;
-  color: rgb(255, 0, 0);
+  padding: 15px;
+}
+
+.modal__window {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  width: min(40ch, calc(100% - 5rem));
+  height: fit-content;
+  padding: 2em;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2em;
+  background-color: #3f3f3f;
+  border-radius: 1em;
+}
+
+.modal__text {
+  width: 100%;
+  font-size: 15px;
+  font-weight: 400;
+  text-align: center;
+}
+
+.modal__button {
+  padding: 0.5em 1em;
+  border-radius: 4px;
+  background-color: transparent;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal__button--positive {
+  border: 2px solid teal;
+}
+
+.modal__button--positive:hover {
+  background-color: teal;
+}
+
+.modal__button--negative {
+  border: 2px solid tomato;
+}
+
+.modal__button--negative:hover {
+  background-color: tomato;
 }
