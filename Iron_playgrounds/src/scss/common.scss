@@ -1,0 +1,27 @@
+:root {
+  // --------------------------colors-------------------------------
+  --basic-decore-color: #42acbd;
+  --secondary-decore-color: #426ebd;
+  --third-decore-color: #42bd91;
+
+  --basic-text-color: #150089;
+  --secondary-text-color: #5d0077;
+
+  --basic-background-blur-color: #4c4c4c6d;
+
+  //---------------------------sizes----------------------------------
+  --headers-font-size: 25px;
+  --main-font-size: 16px;
+  --small-font-size: 12px;
+
+  --padding-main: 50px;
+  --gap-main: 20px;
+
+  //---------------------------fonts----------------------------------
+  --headers-font-family: 'Ruslan Display', system-ui, cursive;
+  --main-font-family: 'Play', system-ui, cursive;
+
+  --main-font-weight: 400;
+  --headers-font-weight: 600;
+  --secondary-font-weight: 500;
+}

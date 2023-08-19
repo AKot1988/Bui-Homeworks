@@ -1,0 +1,41 @@
+@import '@/scss/mixins.scss';
+@import '@/scss/common.scss';
+@import '@/scss/fonts.scss';
+.header {
+  @include flex(center, space-between, row);
+  max-width: 1400px;
+  min-height: 100px;
+  margin: 0px auto;
+  padding: 0px var(--padding-main);
+  flex-wrap: wrap;
+  gap: var(--gap-main);
+  background-color: var(--basic-decore-color);
+
+  &__menu__wrapper {
+    @include flex(center, center, row);
+  }
+
+  &__home,
+  &__map,
+  &__my-places,
+  &__button {
+    width: 100px;
+    @include flex(center, center, row);
+    @include font(
+      var(--main-font-family),
+      var(--main-font-weight),
+      var(--main-font-size),
+      20px
+    );
+    color: var(--basic-text-color);
+    cursor: pointer;
+
+    height: 20px;
+  }
+}
+
+.logo {
+  width: 70px;
+  height: auto;
+  fill: var(--secondary-decore-color);
+}

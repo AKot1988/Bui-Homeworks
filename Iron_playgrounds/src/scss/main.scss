@@ -1,0 +1,13 @@
+@import './reset.scss';
+@import './fonts.scss';
+@import './mixins.scss';
+@import './common.scss';
+
+* {
+  font-family: var(--headers-font-family);
+}
+
+#app {
+  width: 100vw;
+  height: 100vh;
+}
