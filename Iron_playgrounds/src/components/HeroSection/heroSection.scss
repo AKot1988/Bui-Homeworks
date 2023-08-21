@@ -1,0 +1,59 @@
+@import '@/scss/mixins.scss';
+@import '@/scss/common.scss';
+@import '@/scss/fonts.scss';
+
+.hero-section {
+  @include flex(center, center, row);
+  width: 100vw;
+  height: calc(100vh - var(--footer-height) - var(--header-height));
+  background-image: url('../../images/content_img/bakcground.JPG');
+  background-size: cover;
+
+  &__wrapper {
+    max-width: 1280px;
+    @include flex(center, center, row);
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 0px auto;
+    padding: 20px;
+  }
+
+  &__description__wrapper {
+    @include flex(start, center, column);
+    padding: var(--padding-main);
+    gap: var(--gap-main);
+    max-width: 500px;
+    height: auto;
+    background-color: var(--basic-background-blur-color);
+    border-radius: 10px;
+  }
+
+  &__description__slogan {
+    @include font(
+      var(--headers1-font-family),
+      var(--headers-font-weight),
+      var(--headers1-font-size),
+      30px
+    );
+    color: var(--basic-text-color);
+  }
+
+  &__description {
+    @include font(
+      var(--main-font-family),
+      var(--headers-font-weight),
+      var(--main-font-size),
+      20px
+    );
+    color: var(--basic-text-color);
+  }
+
+  &__carousel__wrapper {
+    @include flex(start, center, column);
+    padding: 0px var(--padding-main);
+    gap: var(--gap-main);
+    width: 500px;
+    // max-width: 500px;
+    height: 300px;
+  }
+}

@@ -7,6 +7,7 @@ export default function Header() {
   this.isLoggedIn = false;
 
   this.elements = {
+    wrapper: document.createElement('div'),
     self: document.createElement('div'),
     menu: document.createElement('div'),
     home: document.createElement('div'),
@@ -22,6 +23,7 @@ export default function Header() {
 
 Header.prototype.render = function (parent) {
   this.elements.self.classList.add('header');
+  this.elements.wrapper.classList.add('header__wrapper');
   this.elements.menu.classList.add('header__menu__wrapper');
   this.elements.home.classList.add('header__home');
   this.elements.map.classList.add('header__map');
@@ -30,7 +32,7 @@ Header.prototype.render = function (parent) {
   this.elements.home.textContent = 'Home';
   this.elements.map.textContent = 'Map';
   this.elements.myPlaces.textContent = 'My places';
-  this.elements.self.insertAdjacentHTML('afterbegin', IRON_LOGO);
+  this.elements.wrapper.insertAdjacentHTML('afterbegin', IRON_LOGO);
 
   // if (!this.isLoggedIn) {
   //   this.elements.self.append(
@@ -54,8 +56,8 @@ Header.prototype.render = function (parent) {
       this.elements.myPlaces
     );
     this.elements.button.render(this.elements.menu);
-    this.elements.self.append(this.elements.menu);
+    this.elements.wrapper.append(this.elements.menu);
   }
-
+  this.elements.self.append(this.elements.wrapper);
   parent.append(this.elements.self);
 };
