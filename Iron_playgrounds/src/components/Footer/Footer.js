@@ -1,4 +1,8 @@
-import { YOUTUBE_LOGO, INSTAGRAM_LOGO, PIGGY_LOGO } from '../../images/svg/svg';
+import {
+  YOUTUBE_LOGO,
+  INSTAGRAM_LOGO,
+  PIGGY_LOGO,
+} from '@/assets/images/svg/svg';
 import './Footer.scss';
 
 export default function Footer() {
@@ -22,18 +26,10 @@ Footer.prototype.render = function (parent) {
   this.elements.monobank.classList.add('footer__monobank__link');
   this.elements.copyrightMessage.classList.add('footer__copyrightMessage');
 
-  this.elements.youtube.setAttribute(
-    'href',
-    'https://www.youtube.com/@kulibabenko'
-  );
-  this.elements.instagram.setAttribute(
-    'href',
-    'https://www.instagram.com/kulibabenko/'
-  );
-  this.elements.monobank.setAttribute(
-    'href',
-    'https://send.monobank.ua/jar/5vjnd7Q1Rx'
-  );
+  this.elements.youtube.href = 'https://www.youtube.com/@kulibabenko';
+  this.elements.instagram.href = 'https://www.instagram.com/kulibabenko/';
+  this.elements.monobank.href = 'https://send.monobank.ua/jar/5vjnd7Q1Rx';
+
   this.elements.youtube.innerHTML = YOUTUBE_LOGO;
   this.elements.instagram.innerHTML = INSTAGRAM_LOGO;
   this.elements.monobank.innerHTML = PIGGY_LOGO;

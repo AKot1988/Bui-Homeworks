@@ -1,0 +1,30 @@
+@import '@/scss/mixins.scss';
+@import '@/scss/common.scss';
+@import '@/scss/fonts.scss';
+
+.iron-card {
+  @include flex(start, center, column);
+  gap: var(--gap-main);
+
+  &__photo {
+    width: 100%;
+    object-fit: cover;
+    aspect-ratio: 16 / 9;
+  }
+
+  &__title,
+  &__description,
+  &__rate {
+    @include font(
+      var(--main-font-family),
+      var(--headers-font-weight),
+      var(--main-font-size),
+      20px
+    );
+    color: var(--basic-text-color);
+    gap: var(--gap-main);
+  }
+  &__description {
+    height: 200px;
+  }
+}

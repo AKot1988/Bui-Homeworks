@@ -1,5 +1,5 @@
 import Button from '@/components/Button/Button';
-import { IRON_LOGO } from '../../images/svg/svg.js';
+import { IRON_LOGO } from '@/assets/images/svg/svg.js';
 
 import './Header.scss';
 

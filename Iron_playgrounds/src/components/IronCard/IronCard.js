@@ -1,3 +1,5 @@
+import './IronCard.scss';
+
 export default function IronCard(data) {
   this.data = data;
   this.elements = {
@@ -25,9 +27,9 @@ IronCard.prototype.render = function (parent) {
   this.elements.title.innerText = this.data.title;
   this.elements.description.innerText = this.data.description;
   this.elements.photo.src = this.data.photo;
-  this.elements.longitude.innerText = this.data.coordinates.longitude;
-  this.elements.latitude.innerText = this.data.coordinates.latitude;
-  this.elements.rate.innerText = this.data.rate;
+  this.elements.longitude.innerText = this.data.coordinates?.longitude;
+  this.elements.latitude.innerText = this.data.coordinates?.latitude;
+  this.elements.rate.innerText = `Рейтинг майданчика: ${this.data.rate}`;
   this.elements.author.innerText = this.data.author;
 
   this.elements.self.append(
@@ -37,4 +39,8 @@ IronCard.prototype.render = function (parent) {
     this.elements.rate
   );
   parent.append(this.elements.self);
+};
+
+IronCard.prototype.remove = function (parent) {
+  this.elements.self.remove();
 };
