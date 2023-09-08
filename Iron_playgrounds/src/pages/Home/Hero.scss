@@ -5,19 +5,14 @@
 .hero-section {
   @include flex(center, center, row);
   width: 100vw;
-  height: calc(100vh - var(--footer-height) - var(--header-height));
-  background-image: url('@/assets/images/content_img/bakcground.JPG');
+  margin: auto;
+  // height: calc(100vh - var(--footer-height) - var(--header-height));
+  // background-image: url('@/assets/images/content_img/bakcground.JPG');
   background-size: cover;
-
-  &__wrapper {
-    max-width: 1280px;
-    @include flex(center, center, row);
-    align-items: stretch;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin: 0px auto;
-    padding: 20px;
-  }
+  // max-width: 1280px;
+  align-items: stretch;
+  gap: 20px;
+  flex-wrap: wrap;
 
   &__description__wrapper {
     @include flex(start, center, column);

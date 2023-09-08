@@ -1,0 +1,49 @@
+@import '@/scss/mixins.scss';
+@import '@/scss/common.scss';
+@import '@/scss/fonts.scss';
+
+.log-in {
+  @include flex(center, center, row);
+  width: 100vw;
+  margin: 0px auto;
+  // height: calc(100vh - var(--footer-height) - var(--header-height));
+  background-image: url('@/assets/images/content_img/bakcground.JPG');
+  background-size: cover;
+  // max-width: 1280px;
+  // align-items: stretch;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 20px;
+
+  &__form {
+    @include flex(center, center, column);
+    gap: 20px;
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    background-color: var(--main-bg-color);
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+  }
+
+  &__email-log-in-header {
+    @include font(
+      var(--main-font-family),
+      var(--headers-font-weight),
+      var(--main-font-size),
+      20px
+    );
+    color: var(--basic-text-color);
+  }
+
+  &__email {
+    @include font(
+      var(--main-font-family),
+      var(--headers-font-weight),
+      var(--main-font-size),
+      20px
+    );
+    color: var(--basic-text-color);
+    gap: var(--gap-main);
+  }
+}

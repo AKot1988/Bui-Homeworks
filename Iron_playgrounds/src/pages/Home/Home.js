@@ -1,30 +1,16 @@
+import { getAllPlaygrounds } from '@/firebase';
+
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
-import { getAllPlaygrounds } from '@/firebase';
 import IronCard from '@/components/IronCard/IronCard.js';
-import '@/scss/HeroSection.scss';
+
 import '@/scss/main.scss';
+import './Hero.scss';
 
-export default function Home() {}
-
-Home.prototype.render = function (parent) {
-  const header = new Header();
-  header.render(parent);
-
-  const newHeroSection = new HeroSection();
-  newHeroSection.render(parent);
-
-  const footer = new Footer();
-  footer.render(parent);
-};
-
-function HeroSection() {
+export default function Home() {
   this.currentSlideIndex = 0;
   this.prevSlide = null;
   this.elements = {
-    // delete the fuck out
-    self: document.createElement('div'),
-    //only this div is needed, because it holds two elements inside
     wrapper: document.createElement('div'),
     descriptionWrapper: document.createElement('div'),
     descriptionSlogan: document.createElement('h1'),
@@ -33,9 +19,11 @@ function HeroSection() {
   };
 }
 
-HeroSection.prototype.render = function (parent) {
-  this.elements.self.classList.add('hero-section');
-  this.elements.wrapper.classList.add('hero-section__wrapper');
+Home.prototype.render = function (parent) {
+  const header = new Header();
+  header.render(parent);
+
+  this.elements.wrapper.classList.add('hero-section');
   this.elements.descriptionWrapper.classList.add(
     'hero-section__description__wrapper'
   );
@@ -61,13 +49,15 @@ HeroSection.prototype.render = function (parent) {
     this.elements.descriptionWrapper,
     this.elements.carouselWrapper
   );
-  this.elements.self.append(this.elements.wrapper);
-  parent.append(this.elements.self);
+  parent.append(this.elements.wrapper);
+
+  const footer = new Footer();
+  footer.render(parent);
 
   this.handleCarousel();
 };
 
-HeroSection.prototype.handleCarousel = async function (parent) {
+Home.prototype.handleCarousel = async function (parent) {
   const ironPlaygroundsCollection = await getAllPlaygrounds();
 
   const firstIronCard = new IronCard(
@@ -93,5 +83,5 @@ HeroSection.prototype.handleCarousel = async function (parent) {
     newIronCard.render(this.elements.carouselWrapper);
     this.currentSlideIndex++;
     this.prevSlide = newIronCard;
-  }, 3000);
+  }, 1500);
 };
