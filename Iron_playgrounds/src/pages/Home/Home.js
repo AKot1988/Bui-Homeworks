@@ -20,8 +20,8 @@ export default function Home() {
 }
 
 Home.prototype.render = function (parent) {
-  const header = new Header();
-  header.render(parent);
+  // const header = new Header();
+  // header.render(parent);
 
   this.elements.wrapper.classList.add('hero-section');
   this.elements.descriptionWrapper.classList.add(

@@ -24,6 +24,7 @@
   &__home,
   &__map,
   &__my-places,
+  &__user-photo,
   &__button {
     width: 100px;
     @include flex(center, center, row);
@@ -37,6 +38,13 @@
     cursor: pointer;
 
     height: 20px;
+  }
+
+  &__user-photo {
+    margin: 0 30px;
+    height: 50px;
+    width: 50px;
+    border-radius: 25px;
   }
 }
 
