@@ -1,6 +1,7 @@
 import { getAuth, signInWithPopup, signOut } from 'firebase/auth';
 import { googleAuthProvider } from '@/firebase/firebase';
 
+import { Router, ROUTES_NAMES } from '@/routes';
 import Button from '@/components/Button/Button';
 import { IRON_LOGO } from '@/assets/images/svg/svg.js';
 
@@ -13,15 +14,17 @@ export default function Header() {
     wrapper: document.createElement('div'),
     self: document.createElement('div'),
     menu: document.createElement('div'),
-    home: document.createElement('div'),
-    map: document.createElement('div'),
+    // --- LINKS ---
+    home: document.createElement('a'),
+    map: document.createElement('a'),
+    myPlaces: document.createElement('a'),
+    // --- LINKS END ---
     userPhoto: document.createElement('img'),
     button: new Button({
       text: 'Log in',
       className: 'header__button',
       onClick: this.handleLogin,
     }),
-    myPlaces: document.createElement('div'),
   };
 }
 
@@ -36,24 +39,41 @@ Header.prototype.renderLoggedIn = function (parent) {
   this.elements.userPhoto.classList.add('header__user-photo');
 
   this.elements.home.textContent = 'Home';
+  this.elements.home.dataset.route = ROUTES_NAMES.home;
+
   this.elements.map.textContent = 'Map';
+  this.elements.map.dataset.route = ROUTES_NAMES.map;
+
   this.elements.myPlaces.textContent = 'My places';
+  this.elements.myPlaces.dataset.route = ROUTES_NAMES.places;
+
   this.elements.wrapper.insertAdjacentHTML('afterbegin', IRON_LOGO);
 
   this.elements.userPhoto.src = auth.currentUser.photoURL;
+
   this.elements.menu.append(
     this.elements.home,
     this.elements.map,
-    this.elements.myPlaces,
-    this.elements.userPhoto
+    this.elements.myPlaces
   );
 
-  // this.elements.button.onClick = this.handleLogout();
+  this.elements.menu.onclick = (event) => {
+    if (event.target === this.elements.menu) return null;
+
+    const nextRoute = event.target.dataset.route;
+
+    Router.navigate(nextRoute);
+  };
+
+  this.elements.button.changeOnClick(this.handleLogout);
+  this.elements.button.changeText('Log Out');
 
   this.elements.wrapper.append(this.elements.menu);
-  this.elements.button.render(this.elements.menu);
+  this.elements.button.render(this.elements.wrapper);
+  this.elements.wrapper.append(this.elements.userPhoto);
 
   this.elements.self.append(this.elements.wrapper);
+
   parent.insertAdjacentElement('afterbegin', this.elements.self);
 };
 
@@ -66,6 +86,9 @@ Header.prototype.renderLoggedOut = function (parent) {
   this.elements.wrapper.insertAdjacentHTML('afterbegin', IRON_LOGO);
   this.elements.button.render(this.elements.wrapper);
 
+  this.elements.button.changeText('Log In');
+  this.elements.button.changeOnClick(this.handleLogin);
+
   this.elements.self.append(this.elements.wrapper);
   // this.elements.button.onClick = this.handleLogout();
   parent.insertAdjacentElement('afterbegin', this.elements.self);
@@ -73,14 +96,11 @@ Header.prototype.renderLoggedOut = function (parent) {
 
 Header.prototype.handleLogin = async function () {
   const response = await signInWithPopup(auth, googleAuthProvider);
-  this.elements.button.textContent = 'Log Out';
-  console.log(response);
 };
 
 Header.prototype.handleLogout = async function () {
   try {
     await signOut(auth);
-    this.elements.button.textContent = 'Log In';
     console.log('logged out');
   } catch (e) {
     console.error(`Logout went wrong - ${e.message}`);

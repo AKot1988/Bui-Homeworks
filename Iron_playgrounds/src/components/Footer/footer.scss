@@ -2,6 +2,8 @@
 @import '@/scss/common.scss';
 @import '@/scss/fonts.scss';
 .footer {
+  position: relative;
+  bottom: 0px;
   width: 100vw;
   height: var(--footer-height);
   background-color: var(--basic-decore-color);

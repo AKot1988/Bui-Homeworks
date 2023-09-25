@@ -3,7 +3,8 @@ import veselkaPark from '@/images/content_img/20210606_180235.jpg';
 export const ironPlaygroundsCollection = [
   {
     title: 'Пaрк Веселка',
-    photo: veselkaPark,
+    photo:
+      'https://photos.google.com/photo/AF1QipO3mdmnjbiuZXzah723eYjB0ToBk_zKT503c6I1',
     coordinates: 'unknown',
     description:
       'Класний майданчик, зі зручними турнічками. Є і турнік і бруси. Тут правда багато дітей і буває, що вони заважають. Влітку збирається багато любителів потренити- сумно не буде, або буде на кого рівнятись. Гарний маленький парк зі старими деревами. Плюсом буде присутність безкоштовного туалета',
@@ -12,7 +13,8 @@ export const ironPlaygroundsCollection = [
   },
   {
     title: 'Парк Наталка на берегу Дніпра',
-    photo: veselkaPark,
+    photo:
+      'https://photos.google.com/photo/AF1QipO3mdmnjbiuZXzah723eYjB0ToBk_zKT503c6I1',
     coordinates: 'unknown',
     description:
       'Крутий майданчик, декілька турніків. Трохи товсті бруси, проте є поперечина для австралійських підтягувань. Поруч баскетбольний та волейбольний майданчики, багато зівак, вид на Дніпро і Північний міст- один з найкращих загально доступних місць',
@@ -21,7 +23,8 @@ export const ironPlaygroundsCollection = [
   },
   {
     title: 'Таємний майданчик на Андріївському',
-    photo: veselkaPark,
+    photo:
+      'https://photos.google.com/photo/AF1QipO3mdmnjbiuZXzah723eYjB0ToBk_zKT503c6I1',
     coordinates: 'unknown',
     description:
       'Таємний майданчик на андріївському. Круте місце, щоб позайматись, якщо ви просто гуляєтек по місту, або хочете відчути себе з ним единим цілим. Майданчик один з найкомпактніших, виконаний з нержавійючої сталі, що не завжди зручно. Кажуть сам пан Голохвастов тренувався саме на цьому майданчику. Поруч е муніципальний платний туалет',
@@ -30,7 +33,8 @@ export const ironPlaygroundsCollection = [
   },
   {
     title: 'Паркінг Труханів острів',
-    photo: veselkaPark,
+    photo:
+      'https://photos.google.com/photo/AF1QipO3mdmnjbiuZXzah723eYjB0ToBk_zKT503c6I1',
     coordinates: 'unknown',
     description:
       'Один з трьох майданчиків на цій локації. Зручно що прям біля паркінгу. Високуватий турнік і бруси трохи різні по висоті (різниця в 1 сантиметр, проте ви відчуєте її). Туалету поруч немає, тому всі бігають під стару грушу поруч',
@@ -39,7 +43,8 @@ export const ironPlaygroundsCollection = [
   },
   {
     title: 'Парк Муромець Труханів острів',
-    photo: veselkaPark,
+    photo:
+      'https://photos.google.com/photo/AF1QipO3mdmnjbiuZXzah723eYjB0ToBk_zKT503c6I1',
     coordinates: 'unknown',
     description:
       'Майданчик, який сховався у парку Муромець одразу через місток за вейк-базою. Прикольний, майже пляжний майданчик ще радянського типу. Присутні турнік, бруси та і все, але саме тут ви маєте можливість знайти місце для купання',

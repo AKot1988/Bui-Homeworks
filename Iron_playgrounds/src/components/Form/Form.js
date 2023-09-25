@@ -33,7 +33,10 @@ Form.prototype.render = function (parent) {
   this.elements.formHeader.classList.add('newCard__form__header');
   this.elements.title.classList.add('newCard__form__title__input');
   this.elements.description.classList.add('newCard__form__description__input');
+
   this.elements.photo.classList.add('newCard__form__photo__input');
+  this.elements.photo.setAttribute('type', 'file');
+
   this.elements.type.classList.add('newCard__form__type__select');
   this.elements.rate.classList.add('newCard__form__rate__select');
 

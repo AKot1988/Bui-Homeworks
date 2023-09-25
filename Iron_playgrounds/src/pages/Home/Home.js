@@ -19,10 +19,7 @@ export default function Home() {
   };
 }
 
-Home.prototype.render = function (parent) {
-  // const header = new Header();
-  // header.render(parent);
-
+Home.prototype.render = async function (parent) {
   this.elements.wrapper.classList.add('hero-section');
   this.elements.descriptionWrapper.classList.add(
     'hero-section__description__wrapper'
@@ -54,34 +51,37 @@ Home.prototype.render = function (parent) {
   const footer = new Footer();
   footer.render(parent);
 
-  this.handleCarousel();
-};
-
-Home.prototype.handleCarousel = async function (parent) {
+  //TODO: handle properly slides switching. Interval causing occasions with double render
+  this.interval && clearInterval(this.interval);
+  this.elements.carouselWrapper.replaceChildren();
   const ironPlaygroundsCollection = await getAllPlaygrounds();
 
-  const firstIronCard = new IronCard(
-    ironPlaygroundsCollection[this.currentSlideIndex]
-  );
+  this.handleCarousel(ironPlaygroundsCollection);
+};
+
+Home.prototype.handleCarousel = function (collection) {
+  const firstIronCard = new IronCard(collection[this.currentSlideIndex]);
+
   firstIronCard.render(this.elements.carouselWrapper);
+
   this.prevSlide = firstIronCard;
 
-  setInterval(() => {
-    if (
-      ironPlaygroundsCollection.length === 1 ||
-      this.currentSlideIndex >= ironPlaygroundsCollection.length - 1
-    ) {
-      this.currentSlideIndex = 0;
-    }
+  if (!this.interval) {
+    this.interval = setInterval(() => {
+      if (
+        collection.length === 1 ||
+        this.currentSlideIndex >= collection.length - 1
+      ) {
+        this.currentSlideIndex = 0;
+      }
 
-    this.prevSlide.remove();
+      this.prevSlide.remove();
 
-    const newIronCard = new IronCard(
-      ironPlaygroundsCollection[this.currentSlideIndex]
-    );
+      const newIronCard = new IronCard(collection[this.currentSlideIndex]);
 
-    newIronCard.render(this.elements.carouselWrapper);
-    this.currentSlideIndex++;
-    this.prevSlide = newIronCard;
-  }, 1500);
+      newIronCard.render(this.elements.carouselWrapper);
+      this.currentSlideIndex++;
+      this.prevSlide = newIronCard;
+    }, 1500);
+  }
 };

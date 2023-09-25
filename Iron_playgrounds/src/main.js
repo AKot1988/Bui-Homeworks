@@ -1,31 +1,12 @@
-import { Home, LoginPage } from '@/pages';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
-import Header from '@/components/Header/Header';
-import Places from '@/pages/Places/Places.js';
-import {
-  getAllPlaygrounds,
-  getAllPlaygroundsByUser,
-  getAllPlaygroundsByFilter,
-} from '@/firebase/API.js';
+import { Router, ROUTES_NAMES } from '@/routes';
 
-const header = new Header();
+Router.navigate(ROUTES_NAMES.home);
+
 const auth = getAuth();
+
+// const userID = onAuthStateChanged(auth, (user) => {console.log(user.uid)});
+
 onAuthStateChanged(auth, (user) => {
-  if (user) {
-    header.renderLoggedIn(document.getElementById('app'));
-    console.log('User is signed in');
-    console.log(auth);
-  } else {
-    header.renderLoggedOut(document.getElementById('app'));
-    console.log('User is signed out');
-  }
+  Router.changeAuth(user);
 });
-
-const newPlaces = new Places();
-newPlaces.render(document.getElementById('app'));
-console.log(getAllPlaygrounds);
-newPlaces.renderFilteredPlaces(getAllPlaygrounds);
-newPlaces.render(document.getElementById('app'));
-
-// const homePage = new Home();
-// homePage.render(document.getElementById('app'));

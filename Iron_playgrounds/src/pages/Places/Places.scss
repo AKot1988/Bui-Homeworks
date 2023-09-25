@@ -1,3 +1,83 @@
 @import '@/scss/mixins.scss';
 @import '@/scss/common.scss';
 @import '@/scss/fonts.scss';
+
+.places {
+  width: 100vw;
+
+  &__options__wrapper {
+    max-width: 1280px;
+    height: 150px;
+    margin: 0px auto;
+  }
+
+  &__cards__wrapper {
+    max-width: 1280px;
+    min-height: 150px;
+    margin: 0px auto;
+    @include flex(start, center, row);
+    flex-wrap: wrap;
+    gap: var(--gap-main);
+  }
+
+  .iron-card {
+    padding: 10px;
+    @include flex(start, center, column);
+    gap: var(--gap-main);
+    max-width: 150px;
+    height: 450px;
+    background-color: var(--basic-background-blur-color);
+    border-radius: 10px;
+
+    &__photo {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+      aspect-ratio: 16 / 8;
+    }
+
+    &__title,
+    &__description,
+    &__rate {
+      @include font(
+        var(--main-font-family),
+        var(--headers-font-weight),
+        var(--main-font-size),
+        20px
+      );
+      color: var(--basic-text-color);
+      gap: var(--gap-main);
+    }
+    &__description {
+      height: 100px;
+      overflow-y: hidden;
+    }
+  }
+}
+
+.places__cards__wrapper .iron-card {
+  @include flex(start, center, column);
+  gap: var(--gap-main);
+
+  &__photo {
+    width: 100%;
+    object-fit: cover;
+    // aspect-ratio: 16 / 9;
+  }
+
+  &__title,
+  &__description,
+  &__rate {
+    @include font(
+      var(--main-font-family),
+      var(--headers-font-weight),
+      var(--main-font-size),
+      20px
+    );
+    color: var(--basic-text-color);
+    gap: var(--gap-main);
+  }
+  &__description {
+    height: 200px;
+  }
+}
