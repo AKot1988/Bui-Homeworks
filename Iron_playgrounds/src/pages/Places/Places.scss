@@ -4,11 +4,45 @@
 
 .places {
   width: 100vw;
+  height: 60px;
 
   &__options__wrapper {
     max-width: 1280px;
-    height: 150px;
     margin: 0px auto;
+    @include flex(start, center, row);
+    gap: var(--gap-main);
+    padding: 20px 0;
+  }
+
+  &__filterOptions,
+  &__filterOptions option {
+    @include font(
+      var(--main-font-family),
+      var(--main-font-weight),
+      var(--main-font-size),
+      20px
+    );
+    color: var(--basic-text-color);
+    padding: 3px;
+    border-radius: 5px;
+  }
+
+  &__add__button {
+    @include font(
+      var(--main-font-family),
+      var(--main-font-weight),
+      var(--main-font-size),
+      20px
+    );
+    color: var(--basic-text-color);
+    padding: 3px;
+    border-radius: 5px;
+    border: 1px solid var(--basic-text-color);
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      background-color: var(--basic-background-blur-color);
+    }
   }
 
   &__cards__wrapper {
@@ -22,7 +56,7 @@
 
   .iron-card {
     padding: 10px;
-    @include flex(start, center, column);
+    @include flex(start, space-between, column);
     gap: var(--gap-main);
     max-width: 150px;
     height: 450px;
@@ -31,17 +65,15 @@
 
     &__photo {
       width: 100%;
-      height: 100px;
       object-fit: cover;
-      aspect-ratio: 16 / 8;
+      aspect-ratio: 16 / 9;
     }
 
     &__title,
-    &__description,
     &__rate {
       @include font(
         var(--main-font-family),
-        var(--headers-font-weight),
+        var(--main-font-weight),
         var(--main-font-size),
         20px
       );
@@ -49,35 +81,16 @@
       gap: var(--gap-main);
     }
     &__description {
-      height: 100px;
+      height: 200px;
       overflow-y: hidden;
+      @include font(
+        var(--main-font-family),
+        var(--main-font-weight),
+        var(--small-font-size),
+        20px
+      );
+      color: var(--basic-text-color);
+      gap: var(--gap-main);
     }
-  }
-}
-
-.places__cards__wrapper .iron-card {
-  @include flex(start, center, column);
-  gap: var(--gap-main);
-
-  &__photo {
-    width: 100%;
-    object-fit: cover;
-    // aspect-ratio: 16 / 9;
-  }
-
-  &__title,
-  &__description,
-  &__rate {
-    @include font(
-      var(--main-font-family),
-      var(--headers-font-weight),
-      var(--main-font-size),
-      20px
-    );
-    color: var(--basic-text-color);
-    gap: var(--gap-main);
-  }
-  &__description {
-    height: 200px;
   }
 }

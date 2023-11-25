@@ -1,10 +1,9 @@
 @import '@/scss/mixins.scss';
 @import '@/scss/common.scss';
 @import '@/scss/fonts.scss';
+
 .footer {
-  position: relative;
-  bottom: 0px;
-  width: 100vw;
+  width: 100%;
   height: var(--footer-height);
   background-color: var(--basic-decore-color);
 

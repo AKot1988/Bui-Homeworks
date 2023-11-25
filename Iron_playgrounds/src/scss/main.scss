@@ -20,9 +20,19 @@ body::-webkit-scrollbar-thumb {
 }
 
 #app {
-  display: flex;
-  flex-direction: column;
   width: 100vw;
   height: 100vh;
-  position: absolute;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  overflow: hidden;
+}
+
+#pageContent {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
 }

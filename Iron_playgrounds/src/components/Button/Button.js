@@ -1,11 +1,11 @@
 export default function Button({
   text,
   className = 'primary-btn',
-  onClick = () => null,
+  clickHandler,
 }) {
   this.text = text;
   this.className = className;
-  this.clickHandler = onClick;
+  this.clickHandler = clickHandler;
   this.elements = {
     button: document.createElement('button'),
   };

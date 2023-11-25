@@ -9,6 +9,7 @@ import './Header.scss';
 
 const auth = getAuth();
 
+
 export default function Header() {
   this.elements = {
     wrapper: document.createElement('div'),
@@ -23,7 +24,7 @@ export default function Header() {
     button: new Button({
       text: 'Log in',
       className: 'header__button',
-      onClick: this.handleLogin,
+      clickHandler: this.handleLogin,
     }),
   };
 }
@@ -101,6 +102,7 @@ Header.prototype.handleLogin = async function () {
 Header.prototype.handleLogout = async function () {
   try {
     await signOut(auth);
+    Router.navigate(ROUTES_NAMES.home);
     console.log('logged out');
   } catch (e) {
     console.error(`Logout went wrong - ${e.message}`);

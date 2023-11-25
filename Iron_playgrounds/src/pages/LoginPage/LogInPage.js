@@ -9,14 +9,8 @@ import './LogInPage.scss';
 
 export default function LogInPage() {}
 LogInPage.prototype.render = function (parent) {
-  const newHeader = new Header();
-  newHeader.render(parent);
-
   const newLogIn = new LogIn();
   newLogIn.render(parent);
-
-  const newFooter = new Footer();
-  newFooter.render(parent);
 };
 
 function LogIn() {
@@ -74,7 +68,7 @@ LogIn.prototype.render = function (parent) {
   );
 
   this.elements.form.append(
-    this.elements.emailLogInHeader,    
+    this.elements.emailLogInHeader,
     this.elements.email,
     this.elements.password,
     this.elements.button

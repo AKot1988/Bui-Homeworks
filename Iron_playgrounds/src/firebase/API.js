@@ -1,51 +1,92 @@
-import { getDocs } from 'firebase/firestore';
-import { playgroundCollectionRef } from './firebase';
-import { onAuthStateChanged, getAuth } from 'firebase/auth';
+import { doc, getDoc, getDocs } from 'firebase/firestore';
+import { playgroundCollectionRef, favoritesCollectionRef } from './firebase';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { Router } from '@/routes';
 
-const auth = getAuth();
+export const auth = getAuth();
+// console.log(Router.user);
+// const userID = onAuthStateChanged(auth, (user) => {
+//   console.log(user.uid);
+// });
+// console.log(userID);
 
 export const getAllPlaygrounds = async () => {
   const responseSnapShot = await getDocs(playgroundCollectionRef);
   const res = [];
-  responseSnapShot.forEach((p) => res.push(p.data()));
+
+  responseSnapShot.forEach((playGroundReference) => {
+    const playGround = {
+      ...playGroundReference.data(),
+
+      id: playGroundReference.id,
+    };
+
+    res.push(playGround);
+  });
+
   return res;
 };
 
 export const getAllPlaygroundsByUser = async () => {
-  const userId = onAuthStateChanged(auth, (user) => {
-    user.uid;
-    return user.uid;
-  });
-
   const responseSnapShot = await getDocs(playgroundCollectionRef);
   const res = [];
   responseSnapShot.forEach((p) => {
-    if (p.data().author === auth.lastNotifiedUid) {
-      res.push(p.data());
+    const playGround = {
+      ...p.data(),
+      id: p.id,
+    };
+
+    if (playGround.author === auth.lastNotifiedUid) {
+      res.push(playGround);
     }
   });
 
-  console.log('API -> getAllPlaygroundsByUser');
   return res;
 };
 
-export const getAllPlaygroundsFavorites = async () => {
-  const allCardsData = await getAllPlaygrounds();
-  const res = [];
-  allCardsData.forEach((p) => {
-    if (p.usersToFavorite.includes(auth.lastNotifiedUid)) {
-      res.push(p);
-    }
+export const getFavorites = async () => {
+  //отримуємо докРеф (посилання на документ у колекції фейворітс)
+  const docRef = doc(favoritesCollectionRef, Router.user.uid);
+  //отримуємо документСнепшот (на один конкретний документ)
+  const res = await getDoc(docRef);
+  // console.log(res);
+  //отримуємо масив з посиланнями (докРефи) на документи у колекції плейграундс
+  const currentUserFavoritesList = res.data()?.list;
+  // console.log(currentUserFavoritesList);
+  //отримуємо масив з документСнепшотами у колекції плейграундс
+  const favDocumentsSnapshots = await Promise.all(
+    currentUserFavoritesList.map((favDocRef) => getDoc(favDocRef)) //
+  );
+  //отримуемо масив з повноцінними даними (обєкт для створення АйронКард), розпаковуємо кожний обєкт
+  //і пхаємо в нього ще й айдішнік документа (у документСнепшота є айдішнік)
+  return favDocumentsSnapshots.map((docSnapshot) => ({
+    ...docSnapshot.data(),
+    id: docSnapshot.id,
+  })); //
+};
+
+// export const userIDCardList = async () => {
+//   const favArray = await getFavorites();
+//   const favIDArray = [];
+//   favArray.forEach((data) => {
+//     favIDArray.push(data.id);
+//   });
+//   return favIDArray;
+// };
+
+export const doesCardInFavorites = async function (
+  id,
+  unCheckedSVG,
+  checkedSVG
+) {
+  const favArray = await getFavorites();
+  const favIDArray = [];
+  favArray.forEach((data) => {
+    favIDArray.push(data.id);
   });
-  console.log('API -> getAllPlaygroundsByFilter');
-  return res;
+  if (favIDArray.includes(id)) {
+    return checkedSVG;
+  } else {
+    return unCheckedSVG;
+  }
 };
-
-// const responseSnapShot = await getDocs(playgroundCollectionRef);
-// const res = [];
-// responseSnapShot.forEach((p) => {
-//   console.log(p.data().usersToFavorite);
-//   if (p.data().usersToFavorite.filter(auth.lastNotifiedUid)) {
-//     res.push(p.data());
-//   }
-// });

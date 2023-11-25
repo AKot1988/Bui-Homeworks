@@ -1,6 +1,5 @@
 import { getAllPlaygrounds } from '@/firebase';
 
-import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import IronCard from '@/components/IronCard/IronCard.js';
 
@@ -48,11 +47,9 @@ Home.prototype.render = async function (parent) {
   );
   parent.append(this.elements.wrapper);
 
-  const footer = new Footer();
-  footer.render(parent);
-
   //TODO: handle properly slides switching. Interval causing occasions with double render
   this.interval && clearInterval(this.interval);
+
   this.elements.carouselWrapper.replaceChildren();
   const ironPlaygroundsCollection = await getAllPlaygrounds();
 
@@ -82,6 +79,6 @@ Home.prototype.handleCarousel = function (collection) {
       newIronCard.render(this.elements.carouselWrapper);
       this.currentSlideIndex++;
       this.prevSlide = newIronCard;
-    }, 1500);
+    }, 3000);
   }
 };

@@ -3,4 +3,5 @@ export const ROUTES_NAMES = Object.freeze({
   login: '/login',
   places: '/places',
   map: '/map',
+  singleCard: '/single-card',
 });
