@@ -2,6 +2,13 @@
 @import '@/scss/common.scss';
 @import '@/scss/fonts.scss';
 
+#pageContent {
+  height: calc(100vh - var(--footer-height) - var(--header-height));
+  background-image: url('@/assets/images/content_img/bakcground.JPG');
+  // background-position: -100px 0px;
+  background-size: cover;
+}
+
 .places {
   width: 100vw;
   height: 60px;

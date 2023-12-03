@@ -27,7 +27,7 @@ export default function Form({ type = 'create', afterSubmit }) {
       longitude: document.createElement('input'),
       latitude: document.createElement('input'),
     },
-    description: document.createElement('input'),
+    description: document.createElement('textarea'),
     photo: document.createElement('input'),
     type: document.createElement('select'),
     rate: document.createElement('select'),
@@ -49,8 +49,6 @@ Form.prototype.render = function (parent) {
   this.elements.coordinates.latitude.classList.add('newCard__form__latitude');
 
   this.elements.description.classList.add('newCard__form__description__input');
-
-  this.elements.description.setAttribute('type', 'textarea');
 
   this.elements.photo.classList.add('newCard__form__photo__input');
 
@@ -74,11 +72,14 @@ Form.prototype.render = function (parent) {
 
   this.elements.description.placeholder = 'Опиши плюси і мінуси майданчика';
   this.elements.photo.placeholder = 'Прикріпи фото тут';
-  this.elements.rate.placeholder = 'Порадь майданчик спортсменам-однодумцям';
   this.elements.type.placeholder = 'Обери тип майданчика';
   this.elements.rate.placeholder = 'Обери рейтинг майданчика';
-  this.elements.type.innerHTML = this.createOptions(this.typeOptions);
-  this.elements.rate.innerHTML = this.createOptions(this.rateOptions);
+  this.elements.type.innerHTML = this.createOptions({
+    optionsSet: this.typeOptions,
+  });
+  this.elements.rate.innerHTML = this.createOptions({
+    optionsSet: this.rateOptions,
+  });
 
   this.elements.title.name = 'title';
   this.elements.coordinates.name = 'coordinates';
@@ -124,7 +125,7 @@ Form.prototype.handleCreate = async function () {
 
 // Тут треба поправити куди пишеться широта і довгота, оскільки вони просто пишуться у картку, а не в картка.координати
 
-Form.prototype.handleEdit = async function (id) {
+Form.prototype.handleEdit = async function () {
   const formData = new FormData(this.elements.form);
 
   const UPDironCardData = {
@@ -151,19 +152,69 @@ Form.prototype.editData = function (data) {
   this.elements.coordinates.longitude.value = data.coordinates.longitude;
   this.elements.description.value = data.description;
   this.elements.photo.value = data.photo;
-  this.elements.type.value = data.type;
-  this.elements.rate.value = data.rate;
+  this.elements.type.innerHTML = this.createOptions({
+    optionsSet: this.typeOptions,
+    type: 'edit',
+    value: data.type,
+  });
+  console.log(this.elements.type.innerHTML);
+  this.elements.rate.innerHTML = this.createOptions({
+    optionsSet: this.rateOptions,
+    type: 'edit',
+    value: data.rate,
+  });
   this.id = data.id;
 };
 
-Form.prototype.createOptions = function (optionsSet) {
+Form.prototype.createOptions = function ({
+  optionsSet = [],
+  type = 'create',
+  value,
+}) {
   const options = optionsSet;
-  return [
-    options.map(
-      (item) => `<option value="${item}" data-filter="${item}">${item}</option>`
-    ),
-  ].join();
+  // console.log(options);
+  switch (type) {
+    case 'edit':
+      return [
+        options.map((item) => {
+          // debugger;
+          if (item === value) {
+            return `<option value="${item}" data-filter="${item}" selected>${item}</option>`;
+          } else {
+            return `<option value="${item}" data-filter="${item}">${item}</option>`;
+          }
+        }),
+      ].join();
+      break;
+    case 'create':
+      return [
+        options.map(
+          (item) =>
+            `<option value="${item}" data-filter="${item}">${item}</option>`
+        ),
+      ].join();
+      break;
+  }
 };
+
+// if (type === 'create') {
+//   return [
+//     options.map(
+//       (item) =>
+//         `<option value="${item}" data-filter="${item}">${item}</option>`
+//     ),
+//   ].join();
+// } else if (type === 'edit') {
+//   return [
+//     options.map((item) => {
+//       debugger;
+//       if (item === value) {
+//         return `<option value="${item}" data-filter="${item}" selected>${item}</option>`;
+//       } else {
+//         return `<option value="${item}" data-filter="${item}">${item}</option>`;
+//       }
+//     }),
+//   ].join();
 
 Form.prototype.handleFormAction = async function (e) {
   e.preventDefault();
