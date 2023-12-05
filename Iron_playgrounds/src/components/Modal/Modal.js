@@ -19,7 +19,7 @@ Modal.prototype.render = function (parent, ContentComponent) {
   this.elements.wrapper.classList.add('modal__wrapper');
   this.elements.contentHolder.classList.add('modal__content-holder');
 
-  this.ContentComponent.render(this.elements.contentHolder);
+  this.ContentComponent?.render(this.elements.contentHolder);
   this.elements.wrapper.append(this.elements.contentHolder);
 
   this.elements.wrapper.onclick = (event) => {

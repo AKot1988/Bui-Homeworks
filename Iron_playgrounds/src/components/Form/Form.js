@@ -40,7 +40,7 @@ export default function Form({ type = 'create', afterSubmit }) {
   };
 }
 
-Form.prototype.render = function (parent) {
+Form.prototype.render = function (parent, data) {
   this.elements.form.classList.add('newCard__form');
   this.elements.formHeader.classList.add('newCard__form__header');
   this.elements.title.classList.add('newCard__form__title__input');
@@ -72,14 +72,17 @@ Form.prototype.render = function (parent) {
 
   this.elements.description.placeholder = 'Опиши плюси і мінуси майданчика';
   this.elements.photo.placeholder = 'Прикріпи фото тут';
-  this.elements.type.placeholder = 'Обери тип майданчика';
-  this.elements.rate.placeholder = 'Обери рейтинг майданчика';
-  this.elements.type.innerHTML = this.createOptions({
-    optionsSet: this.typeOptions,
-  });
-  this.elements.rate.innerHTML = this.createOptions({
-    optionsSet: this.rateOptions,
-  });
+
+  if (data) {
+    this.editData(data);
+  } else {
+    this.elements.type.innerHTML = this.createOptions({
+      optionsSet: this.typeOptions,
+    });
+    this.elements.rate.innerHTML = this.createOptions({
+      optionsSet: this.rateOptions,
+    });
+  }
 
   this.elements.title.name = 'title';
   this.elements.coordinates.name = 'coordinates';
@@ -122,8 +125,6 @@ Form.prototype.handleCreate = async function () {
 
   await addDoc(playgroundCollectionRef, ironCardData);
 };
-
-// Тут треба поправити куди пишеться широта і довгота, оскільки вони просто пишуться у картку, а не в картка.координати
 
 Form.prototype.handleEdit = async function () {
   const formData = new FormData(this.elements.form);
@@ -171,50 +172,34 @@ Form.prototype.createOptions = function ({
   type = 'create',
   value,
 }) {
-  const options = optionsSet;
-  // console.log(options);
   switch (type) {
     case 'edit':
-      return [
-        options.map((item) => {
-          // debugger;
-          if (item === value) {
-            return `<option value="${item}" data-filter="${item}" selected>${item}</option>`;
-          } else {
-            return `<option value="${item}" data-filter="${item}">${item}</option>`;
-          }
-        }),
-      ].join();
-      break;
+      return optionsSet.reduce((accumulator, currentValue) => {
+        if (currentValue === value) {
+          return (
+            accumulator +
+            `<option value="${currentValue}" data-filter="${currentValue}" selected>${currentValue}</option>`
+          );
+        } else {
+          return (
+            accumulator +
+            `<option value="${currentValue}" data-filter="${currentValue}">${currentValue}</option>`
+          );
+        }
+      }, '');
+
     case 'create':
-      return [
-        options.map(
-          (item) =>
-            `<option value="${item}" data-filter="${item}">${item}</option>`
-        ),
-      ].join();
-      break;
+      return optionsSet.reduce((accumulator, currentValue) => {
+        return (
+          accumulator +
+          `<option value="${currentValue}" data-filter="${currentValue}">${currentValue}</option>`
+        );
+      }, '');
+
+    default:
+      return '';
   }
 };
-
-// if (type === 'create') {
-//   return [
-//     options.map(
-//       (item) =>
-//         `<option value="${item}" data-filter="${item}">${item}</option>`
-//     ),
-//   ].join();
-// } else if (type === 'edit') {
-//   return [
-//     options.map((item) => {
-//       debugger;
-//       if (item === value) {
-//         return `<option value="${item}" data-filter="${item}" selected>${item}</option>`;
-//       } else {
-//         return `<option value="${item}" data-filter="${item}">${item}</option>`;
-//       }
-//     }),
-//   ].join();
 
 Form.prototype.handleFormAction = async function (e) {
   e.preventDefault();
@@ -292,4 +277,20 @@ Form.prototype.coordinatesValidation = function (type) {
       document.querySelector('.newCard__form__coordinates__latError')?.remove();
     }
   }
+};
+
+const showPosition = function (position) {
+  this.elements.coordinates.longitude = position.coords.longitude;
+  this.elements.coordinates.latitude = position.coords.latitude;
+
+  console.log(
+    'Latitude: ' +
+      position.coords.latitude +
+      'Longitude: ' +
+      position.coords.longitude
+  );
+};
+
+const getLocation = function () {
+  navigator.geolocation.getCurrentPosition(showPosition);
 };

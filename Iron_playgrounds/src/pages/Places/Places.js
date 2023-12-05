@@ -10,7 +10,7 @@ import Form from '@/components/Form/Form';
 import Modal from '@/components/Modal/Modal';
 import './Places.scss';
 
-export default function PlacesPage() {
+export default function PlacesPage() {''
   this.filterOptions = [
     'Всі майданчики',
     'Мої майданчики',

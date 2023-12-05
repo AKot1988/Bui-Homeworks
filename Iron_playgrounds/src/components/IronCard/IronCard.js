@@ -134,8 +134,9 @@ IronCard.prototype.handleUpdateCardButton = function (ev) {
       Router.navigate(ROUTES_NAMES.places);
     },
   });
-  editForm.editData(this.data);
-  this.modal.render(this.parent, editForm);
+  
+  this.modal.render(this.parent);
+  editForm.render(this.modal.elements.contentHolder, this.data);
 };
 
 IronCard.prototype.handleDeleteCardButton = function (ev) {
