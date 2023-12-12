@@ -1,9 +1,11 @@
 import './Form.scss';
 import Button from '@/components/Button/Button.js';
 import { addDoc, updateDoc, doc } from 'firebase/firestore';
+import { createMap } from '@/utils';
 import { Router } from '@/routes';
 import { playgroundCollectionRef } from '@/firebase/firebase.js';
 import { getAuth } from 'firebase/auth';
+import { mapPointerSVG } from '@/assets/images/svg/svg.js';
 
 const auth = getAuth();
 
@@ -23,10 +25,13 @@ export default function Form({ type = 'create', afterSubmit }) {
     formHeader: document.createElement('h2'),
     title: document.createElement('input'),
 
+    mapContainer: document.createElement('div'),
+
     coordinates: {
       longitude: document.createElement('input'),
       latitude: document.createElement('input'),
     },
+
     description: document.createElement('textarea'),
     photo: document.createElement('input'),
     type: document.createElement('select'),
@@ -40,35 +45,22 @@ export default function Form({ type = 'create', afterSubmit }) {
   };
 }
 
-Form.prototype.render = function (parent, data) {
+Form.prototype.render = async function (parent, data) {
+  this.elements.coordinates.longitude.style.display = 'none';
+  this.elements.coordinates.latitude.style.display = 'none';
+  const mapContainerID = 'mapWrapper__container';
   this.elements.form.classList.add('newCard__form');
   this.elements.formHeader.classList.add('newCard__form__header');
   this.elements.title.classList.add('newCard__form__title__input');
-
-  this.elements.coordinates.longitude.classList.add('newCard__form__longitude');
-  this.elements.coordinates.latitude.classList.add('newCard__form__latitude');
+  this.elements.mapContainer.id = mapContainerID;
 
   this.elements.description.classList.add('newCard__form__description__input');
-
   this.elements.photo.classList.add('newCard__form__photo__input');
-
   this.elements.type.classList.add('newCard__form__type__select');
   this.elements.rate.classList.add('newCard__form__rate__select');
-
   this.elements.formHeader.innerText =
-    'Заповни форму для додавання твого майданчика';
-  this.elements.title.placeholder = 'Влучно дай назву новому майданчику';
-
-  this.elements.coordinates.longitude.placeholder = 'Введи довготу';
-  this.elements.coordinates.latitude.placeholder = 'Введи широту';
-  this.elements.coordinates.longitude.addEventListener(
-    'input',
-    this.coordinatesValidation.bind(this, 'longitude')
-  );
-  this.elements.coordinates.latitude.addEventListener(
-    'input',
-    this.coordinatesValidation.bind(this, 'latitude')
-  );
+    'Заповни форму для додавання нового майданчика';
+  this.elements.title.placeholder = 'Дай назву майданчику';
 
   this.elements.description.placeholder = 'Опиши плюси і мінуси майданчика';
   this.elements.photo.placeholder = 'Прикріпи фото тут';
@@ -84,10 +76,23 @@ Form.prototype.render = function (parent, data) {
     });
   }
 
+  this.elements.coordinates.longitude.classList.add('newCard__form__longitude');
+  this.elements.coordinates.latitude.classList.add('newCard__form__latitude');
+  this.elements.coordinates.longitude.placeholder = 'Введи довготу';
+  this.elements.coordinates.latitude.placeholder = 'Введи широту';
+  this.elements.coordinates.longitude.addEventListener(
+    'input',
+    this.coordinatesValidation.bind(this, 'longitude')
+  );
+  this.elements.coordinates.latitude.addEventListener(
+    'input',
+    this.coordinatesValidation.bind(this, 'latitude')
+  );
+
   this.elements.title.name = 'title';
   this.elements.coordinates.name = 'coordinates';
-  this.elements.coordinates.longitude.name = 'longitude';
   this.elements.coordinates.latitude.name = 'latitude';
+  this.elements.coordinates.longitude.name = 'longitude';
   this.elements.description.name = 'description';
   this.elements.photo.name = 'photo';
   this.elements.type.name = 'type';
@@ -98,6 +103,7 @@ Form.prototype.render = function (parent, data) {
     this.elements.title,
     this.elements.coordinates.longitude,
     this.elements.coordinates.latitude,
+    this.elements.mapContainer,
     this.elements.description,
     this.elements.photo,
     this.elements.type,
@@ -105,46 +111,10 @@ Form.prototype.render = function (parent, data) {
   );
   this.elements.button.render(this.elements.form);
   parent.append(this.elements.form);
-};
 
-Form.prototype.handleCreate = async function () {
-  const formData = new FormData(this.elements.form);
+  await this.getUserLocation();
 
-  const ironCardData = {
-    title: formData.get('title'),
-    author: Router.user.uid,
-    coordinates: {
-      longitude: formData.get('longitude'),
-      latitude: formData.get('latitude'),
-    },
-    description: formData.get('description'),
-    photo: formData.get('photo'),
-    type: formData.get('type'),
-    rate: formData.get('rate'),
-  };
-
-  await addDoc(playgroundCollectionRef, ironCardData);
-};
-
-Form.prototype.handleEdit = async function () {
-  const formData = new FormData(this.elements.form);
-
-  const UPDironCardData = {
-    title: formData.get('title'),
-    coordinates: formData.get('coordinates'),
-    coordinates: {
-      latitude: formData.get('latitude'),
-      longitude: formData.get('longitude'),
-    },
-    description: formData.get('description'),
-    photo: formData.get('photo'),
-    type: formData.get('type'),
-    rate: formData.get('rate'),
-  };
-
-  const cardForUpdDock = doc(playgroundCollectionRef, this.id);
-
-  await updateDoc(cardForUpdDock, { ...UPDironCardData });
+  console.log(this);
 };
 
 Form.prototype.editData = function (data) {
@@ -158,7 +128,6 @@ Form.prototype.editData = function (data) {
     type: 'edit',
     value: data.type,
   });
-  console.log(this.elements.type.innerHTML);
   this.elements.rate.innerHTML = this.createOptions({
     optionsSet: this.rateOptions,
     type: 'edit',
@@ -203,18 +172,30 @@ Form.prototype.createOptions = function ({
 
 Form.prototype.handleFormAction = async function (e) {
   e.preventDefault();
-
+  const formData = new FormData(this.elements.form);
+  const ironCardData = {
+    title: formData.get('title'),
+    author: Router.user.uid,
+    coordinates: {
+      longitude: formData.get('longitude'),
+      latitude: formData.get('latitude'),
+    },
+    description: formData.get('description'),
+    photo: formData.get('photo'),
+    type: formData.get('type'),
+    rate: formData.get('rate'),
+  };
   switch (this.type) {
     case 'edit':
-      await this.handleEdit();
+      const cardForUpdDock = doc(playgroundCollectionRef, this.id);
+      await updateDoc(cardForUpdDock, { ...ironCardData });
       break;
     case 'create':
-      await this.handleCreate();
+      await addDoc(playgroundCollectionRef, ironCardData);
       break;
     default:
       throw TypeError('Wrong form type - ' + this.type);
   }
-
   this.afterSubmit();
 };
 
@@ -279,18 +260,69 @@ Form.prototype.coordinatesValidation = function (type) {
   }
 };
 
-const showPosition = function (position) {
-  this.elements.coordinates.longitude = position.coords.longitude;
-  this.elements.coordinates.latitude = position.coords.latitude;
+Form.prototype.getUserLocation = function () {
+  return new Promise((resolve, reject) => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this.elements.coordinates.longitude.value =
+            position.coords.longitude.toString();
+          this.elements.coordinates.latitude.value =
+            position.coords.latitude.toString();
+          console.log(this.elements.coordinates);
+          createMap({
+            longitude: this.elements.coordinates.longitude.value,
+            latitude: this.elements.coordinates.latitude.value,
+            mapContainerID: 'mapWrapper__container',
+          });
+          console.log(position.coords);
+          console.log(this.elements.coordinates);
+          resolve(); // Викликаємо resolve, якщо отримали координати успішно
+        },
+        (error) => {
+          if (confirm('Вибрати місце самостійно на мапі?')) {
+            const map = createMap({
+              longitude: 30.56163,
+              latitude: 50.44887,
+              mapContainerID: 'mapWrapper__container',
+              customMarkerHTML: mapPointerSVG,
+              mapScale: 8,
+            });
 
-  console.log(
-    'Latitude: ' +
-      position.coords.latitude +
-      'Longitude: ' +
-      position.coords.longitude
-  );
-};
+            const mapContainer = document.getElementById(
+              'mapWrapper__container'
+            );
+            mapContainer.addEventListener('click', (e) => {
+              const selectedCoordinates = JSON.parse(
+                localStorage.getItem('coordinates')
+              );
+              const selectedDIVposition = JSON.parse(
+                localStorage.getItem('DIVposition')
+              );
+              this.elements.coordinates.longitude.value =
+                selectedCoordinates.longitude.toString();
+              this.elements.coordinates.latitude.value =
+                selectedCoordinates.latitude.toString();
+              console.log(selectedCoordinates);
+              console.log(selectedDIVposition);
+            });
 
-const getLocation = function () {
-  navigator.geolocation.getCurrentPosition(showPosition);
+            map.on('load', function () {
+              const markerEl = document.createElement('div');
+              markerEl.innerHTML = mapPointerSVG;
+              markerEl.classList.add('map-page__marker');
+              markerEl.style.position = 'absolute';
+              markerEl.style.left = selectedDIVposition.x + 'px';
+              markerEl.style.top = selectedDIVposition.y + 'px';
+            });
+          } else if (confirm('Ну тоді координати потрібно вводити руцями')) {
+            this.elements.mapContainer.remove();
+            this.elements.coordinates.longitude.style.display = 'block';
+            this.elements.coordinates.latitude.style.display = 'block';
+          }
+          reject(error); // Викликаємо reject у випадку помилки
+        }
+      );
+    }
+  });
 };

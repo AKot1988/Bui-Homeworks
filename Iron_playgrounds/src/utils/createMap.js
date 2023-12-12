@@ -12,6 +12,7 @@ export default function createMap({
   mapContainerID,
   popupContent,
   customMarkerHTML = IRON_LOGO,
+  mapScale = 15,
 }) {
   const coordinates = [longitude, latitude];
 
@@ -19,12 +20,26 @@ export default function createMap({
     container: mapContainerID, // container ID
     style: 'mapbox://styles/kulibabenko/clpcjefcu00bi01pg1wzxed96', // style URL
     center: coordinates, // starting position [lng, lat]
-    zoom: 15,
+    zoom: mapScale, // starting zoom
   });
+  
+  map.on('click', (e) => {
+    const typedCoordinates = {
+      longitude: e.lngLat.wrap().lng,
+      latitude: e.lngLat.wrap().lat,
+    };
+
+    localStorage.setItem('coordinates', JSON.stringify(typedCoordinates));
+
+    const typedDIVposition = {
+      x: e.point.x,
+      y: e.point.y,
+    };
+
+    localStorage.setItem('DIVposition', JSON.stringify(typedDIVposition));
 
   map.on('load', function () {
     const markerEl = document.createElement('div');
-    // TODO: change icon
     markerEl.innerHTML = customMarkerHTML;
     markerEl.classList.add('map-page__marker');
 
@@ -35,5 +50,10 @@ export default function createMap({
           .setHTML(popupContent)
       )
       .addTo(map);
+  });
+
+
+    // console.log(typedCoordinates, typedDIVposition);
+    // return typedCoordinates, typedDIVposition;
   });
 }

@@ -134,13 +134,14 @@ IronCard.prototype.handleUpdateCardButton = function (ev) {
       Router.navigate(ROUTES_NAMES.places);
     },
   });
-  
+
   this.modal.render(this.parent);
   editForm.render(this.modal.elements.contentHolder, this.data);
 };
 
 IronCard.prototype.handleDeleteCardButton = function (ev) {
-  ev.stopPropagation;
+  // ev.preventDefault();
+  ev.stopPropagation();
   const confirmationModal = new Modal();
   confirmationModal.confirmation(document.getElementById('app'), async () => {
     await this.deleteCard();
@@ -152,10 +153,8 @@ IronCard.prototype.handleDeleteCardButton = function (ev) {
 IronCard.prototype.deleteCard = async function () {
   //отримуємо документРеференс на ту картку, по якій тицнули "видалити"
   const playGroundDocRef = doc(playgroundCollectionRef, this.data.id);
-  console.log(playGroundDocRef);
   //отримуємо документСнепшот на ту картку, по якій тицнули "видалити"
   const playGroundSnapshot = await getDoc(playGroundDocRef);
-  console.log(playGroundSnapshot);
   //отримуємо обєкт з даними на ту картку, по якій тицнули "видалити"
   const playGround = playGroundSnapshot.data();
 
@@ -178,7 +177,6 @@ IronCard.prototype.changeFavoritesStatus = async function () {
   const userFavoritesRef = doc(favoritesCollectionRef, Router.user.uid);
   const userFavDocSnapshot = await getDoc(userFavoritesRef);
   const userFavDocRefArray = userFavDocSnapshot.data().list;
-  console.log(userFavDocRefArray);
 
   const favIDArray = [];
   userFavDocRefArray.forEach((docRef) => {

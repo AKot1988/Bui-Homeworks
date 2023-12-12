@@ -48,7 +48,8 @@
     );
     color: var(--basic-text-color);
     padding: 3px;
-    border-radius: 5px;
+    border: 2px solid var(--basic-text-color);
+    border-radius: 10px;
 
     // color: var(--basic-text-color);
     // border: none;
@@ -104,4 +105,22 @@
     top: 185px;
     left: 30px;
   }
+}
+
+#mapWrapper__container {
+  position: relative;
+  width: 90%;
+  height: 200px;
+  background-color: var(--basic-background-blur-color);
+  @include flex(center, center, column);
+  border: 2px solid var(--basic-text-color);
+  border-radius: 10px;
+}
+
+.map-page__marker svg {
+  
+  // fill: red;
+  fill: var(--basic-text-color);
+  width: 30px;
+  height: 30px;
 }
