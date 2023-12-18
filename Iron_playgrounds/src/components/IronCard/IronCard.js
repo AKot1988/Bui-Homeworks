@@ -140,7 +140,6 @@ IronCard.prototype.handleUpdateCardButton = function (ev) {
 };
 
 IronCard.prototype.handleDeleteCardButton = function (ev) {
-  // ev.preventDefault();
   ev.stopPropagation();
   const confirmationModal = new Modal();
   confirmationModal.confirmation(document.getElementById('app'), async () => {

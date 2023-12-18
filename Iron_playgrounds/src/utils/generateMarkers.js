@@ -61,37 +61,3 @@ GenerateMarkers.prototype.render = function () {
       .addTo(this.map);
   });
 };
-
-// export default function generateMarkers({
-//   places = [],
-//   map,
-//   popupContent,
-//   customMarkerHTML = IRON_LOGO,
-// }) {
-//   map.on('load', function () {
-//     places.forEach((place) => {
-//       const markerEl = document.createElement('div');
-//       // TODO: change icon
-//       markerEl.innerHTML = customMarkerHTML;
-//       markerEl.classList.add('map-page__marker');
-
-//       new mapboxgl.Marker(markerEl)
-//         .setLngLat(Object.values(place.coordinates))
-//         .setPopup(
-//           new mapboxgl.Popup({ offset: 25 }) // add popups
-//             .setHTML(popupContent)
-//         )
-//         .addTo(map);
-//     });
-//   });
-// }
-
-// css part
-// .marker {
-//   background-image: url('mapbox-icon.png');
-//   background-size: cover;
-//   width: 50px;
-//   height: 50px;
-//   border-radius: 50%;
-//   cursor: pointer;
-// }

@@ -4,8 +4,8 @@
 
 #pageContent {
   height: calc(100vh - var(--footer-height) - var(--header-height));
-  background-image: url('@/assets/images/content_img/bakcground.JPG');
-  // background-position: -100px 0px;
+  background-image: url('@/assets/images/content_img/20230428_151154.JPG');
+  background-position-y: -300px;
   background-size: cover;
 }
 

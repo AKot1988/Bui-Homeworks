@@ -107,7 +107,7 @@
   }
 }
 
-#mapWrapper__container {
+#form__mapWrapper__container {
   position: relative;
   width: 90%;
   height: 200px;
@@ -118,7 +118,6 @@
 }
 
 .map-page__marker svg {
-  
   // fill: red;
   fill: var(--basic-text-color);
   width: 30px;

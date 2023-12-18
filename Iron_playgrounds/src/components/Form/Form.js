@@ -1,7 +1,7 @@
 import './Form.scss';
 import Button from '@/components/Button/Button.js';
 import { addDoc, updateDoc, doc } from 'firebase/firestore';
-import { createMap } from '@/utils';
+import { CreateMap } from '@/utils';
 import { Router } from '@/routes';
 import { playgroundCollectionRef } from '@/firebase/firebase.js';
 import { getAuth } from 'firebase/auth';
@@ -48,7 +48,7 @@ export default function Form({ type = 'create', afterSubmit }) {
 Form.prototype.render = async function (parent, data) {
   this.elements.coordinates.longitude.style.display = 'none';
   this.elements.coordinates.latitude.style.display = 'none';
-  const mapContainerID = 'mapWrapper__container';
+  const mapContainerID = 'form__mapWrapper__container';
   this.elements.form.classList.add('newCard__form');
   this.elements.formHeader.classList.add('newCard__form__header');
   this.elements.title.classList.add('newCard__form__title__input');
@@ -113,8 +113,6 @@ Form.prototype.render = async function (parent, data) {
   parent.append(this.elements.form);
 
   await this.getUserLocation();
-
-  console.log(this);
 };
 
 Form.prototype.editData = function (data) {
@@ -172,13 +170,18 @@ Form.prototype.createOptions = function ({
 
 Form.prototype.handleFormAction = async function (e) {
   e.preventDefault();
+  // const lng = this.marker[0]
+  // const lat = this.marker[1]
+  const [lng, lat] = this.marker;
+
   const formData = new FormData(this.elements.form);
   const ironCardData = {
     title: formData.get('title'),
     author: Router.user.uid,
+    //поправити координати і брати їх не з інпуів, а з мапи після драгу
     coordinates: {
-      longitude: formData.get('longitude'),
-      latitude: formData.get('latitude'),
+      longitude: lng,
+      latitude: lat,
     },
     description: formData.get('description'),
     photo: formData.get('photo'),
@@ -260,69 +263,87 @@ Form.prototype.coordinatesValidation = function (type) {
   }
 };
 
+//navigator.geolocation - перевіряє чи є доступ до геолокації в принципі у браузера
+
 Form.prototype.getUserLocation = function () {
-  return new Promise((resolve, reject) => {
+  new Promise(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          this.elements.coordinates.longitude.value =
-            position.coords.longitude.toString();
-          this.elements.coordinates.latitude.value =
-            position.coords.latitude.toString();
-          console.log(this.elements.coordinates);
-          createMap({
-            longitude: this.elements.coordinates.longitude.value,
-            latitude: this.elements.coordinates.latitude.value,
-            mapContainerID: 'mapWrapper__container',
+          const newMap = new CreateMap({
+            longitude: position.coords.longitude,
+            latitude: position.coords.latitude,
+            mapContainerID: 'form__mapWrapper__container',
+            customMarkerHTML: mapPointerSVG,
+            markerDragged: (...allArgs) => this.markerDragged(...allArgs),
           });
-          console.log(position.coords);
-          console.log(this.elements.coordinates);
-          resolve(); // Викликаємо resolve, якщо отримали координати успішно
+
+          newMap.render();
+
+          newMap.addMarker({
+            longitude: position.coords.longitude,
+            latitude: position.coords.latitude,
+          });
+          console.log('Latitude: ' + latitude + ', Longitude: ' + longitude);
+          // Тут можна використовувати отримані координати
         },
-        (error) => {
-          if (confirm('Вибрати місце самостійно на мапі?')) {
-            const map = createMap({
+        async () => {
+          console.log(
+            'Користувач не надав доступ до данних про місцезнаходження'
+          );
+          if (confirm('Обрати місце на мапі вручну?')) {
+            const map = new CreateMap({
               longitude: 30.56163,
               latitude: 50.44887,
-              mapContainerID: 'mapWrapper__container',
+              mapContainerID: 'form__mapWrapper__container',
               customMarkerHTML: mapPointerSVG,
               mapScale: 8,
             });
-
+            map.render();
             const mapContainer = document.getElementById(
-              'mapWrapper__container'
+              'form__mapWrapper__container'
             );
-            mapContainer.addEventListener('click', (e) => {
-              const selectedCoordinates = JSON.parse(
-                localStorage.getItem('coordinates')
-              );
-              const selectedDIVposition = JSON.parse(
-                localStorage.getItem('DIVposition')
-              );
-              this.elements.coordinates.longitude.value =
-                selectedCoordinates.longitude.toString();
-              this.elements.coordinates.latitude.value =
-                selectedCoordinates.latitude.toString();
-              console.log(selectedCoordinates);
-              console.log(selectedDIVposition);
+            const clickedCoordinates = await map.getCoordinates();
+            this.elements.coordinates.longitude.value =
+              clickedCoordinates.longitude;
+            this.elements.coordinates.latitude.value =
+              clickedCoordinates.latitude;
+            console.log(clickedCoordinates);
+            const marker = map.addMarker({
+              longitude: this.elements.coordinates.longitude.value,
+              latitude: this.elements.coordinates.latitude.value,
             });
-
-            map.on('load', function () {
-              const markerEl = document.createElement('div');
-              markerEl.innerHTML = mapPointerSVG;
-              markerEl.classList.add('map-page__marker');
-              markerEl.style.position = 'absolute';
-              markerEl.style.left = selectedDIVposition.x + 'px';
-              markerEl.style.top = selectedDIVposition.y + 'px';
-            });
+            const getCoordAfterDrag = JSON.parse(
+              localStorage.getItem('coordsAfterDrag')
+            );
+            this.elements.coordinates.longitude.value = getCoordAfterDrag[0];
+            this.elements.coordinates.latitude.value = getCoordAfterDrag[1];
+            console.log(this);
+            console.log(getCoordAfterDrag);
           } else if (confirm('Ну тоді координати потрібно вводити руцями')) {
             this.elements.mapContainer.remove();
+
+            //TODO: remove this. you don't need it
             this.elements.coordinates.longitude.style.display = 'block';
             this.elements.coordinates.latitude.style.display = 'block';
+          } else {
+            document.querySelector('.modal__wrapper').remove();
+            this.elements.form.remove();
+            throw new Error(
+              'Вибачте, але без координат ми не зможемо вам допомогти'
+            );
           }
-          reject(error); // Викликаємо reject у випадку помилки
         }
+      );
+    } else {
+      console.log(
+        'Geolocation is not supported by your browser. Please, use search'
       );
     }
   });
+};
+
+Form.prototype.markerDragged = function (longitude, latitude) {
+  this.marker = [longitude, latitude];
+  console.log('New Coordinates arrived, suka! - ', this.marker);
 };

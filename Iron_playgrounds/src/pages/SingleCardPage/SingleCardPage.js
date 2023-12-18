@@ -1,4 +1,4 @@
-import { createMap } from '@/utils';
+import { CreateMap } from '@/utils';
 
 import { IronCard } from '@/components';
 
@@ -34,10 +34,16 @@ SingleCardPage.prototype.render = async function (parent) {
 
   parent.append(this.elements.wrapper);
 
-  createMap({
+  const newMap = new CreateMap({
+    markerDraggable: false,
     longitude: this.data.coordinates.longitude,
     latitude: this.data.coordinates.latitude,
     mapContainerID,
     popupContent: `<a href="${`https://www.google.com/maps/search/?api=1&query=${this.data.coordinates?.latitude},${this.data.coordinates?.longitude}`}" target="_blank">Go to Google Maps</a>`,
+  });
+  newMap.render();
+  newMap.addMarker({
+    longitude: this.data.coordinates.longitude,
+    latitude: this.data.coordinates.latitude,
   });
 };
