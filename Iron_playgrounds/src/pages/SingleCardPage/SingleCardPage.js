@@ -1,4 +1,4 @@
-import { CreateMap } from '@/utils';
+import { Map } from '@/utils';
 
 import { IronCard } from '@/components';
 
@@ -34,7 +34,7 @@ SingleCardPage.prototype.render = async function (parent) {
 
   parent.append(this.elements.wrapper);
 
-  const newMap = new CreateMap({
+  const newMap = new Map({
     markerDraggable: false,
     longitude: this.data.coordinates.longitude,
     latitude: this.data.coordinates.latitude,

@@ -1,7 +1,7 @@
 import './Form.scss';
 import Button from '@/components/Button/Button.js';
 import { addDoc, updateDoc, doc } from 'firebase/firestore';
-import { CreateMap } from '@/utils';
+import { Map } from '@/utils';
 import { Router } from '@/routes';
 import { playgroundCollectionRef } from '@/firebase/firebase.js';
 import { getAuth } from 'firebase/auth';
@@ -20,18 +20,12 @@ export default function Form({ type = 'create', afterSubmit }) {
     'Загальний майданчик для спортіків і дітей',
     'Крaще це, чим нічого',
   ];
+  this.marker = [];
   this.elements = {
     form: document.createElement('form'),
     formHeader: document.createElement('h2'),
     title: document.createElement('input'),
-
     mapContainer: document.createElement('div'),
-
-    coordinates: {
-      longitude: document.createElement('input'),
-      latitude: document.createElement('input'),
-    },
-
     description: document.createElement('textarea'),
     photo: document.createElement('input'),
     type: document.createElement('select'),
@@ -46,8 +40,6 @@ export default function Form({ type = 'create', afterSubmit }) {
 }
 
 Form.prototype.render = async function (parent, data) {
-  this.elements.coordinates.longitude.style.display = 'none';
-  this.elements.coordinates.latitude.style.display = 'none';
   const mapContainerID = 'form__mapWrapper__container';
   this.elements.form.classList.add('newCard__form');
   this.elements.formHeader.classList.add('newCard__form__header');
@@ -76,23 +68,7 @@ Form.prototype.render = async function (parent, data) {
     });
   }
 
-  this.elements.coordinates.longitude.classList.add('newCard__form__longitude');
-  this.elements.coordinates.latitude.classList.add('newCard__form__latitude');
-  this.elements.coordinates.longitude.placeholder = 'Введи довготу';
-  this.elements.coordinates.latitude.placeholder = 'Введи широту';
-  this.elements.coordinates.longitude.addEventListener(
-    'input',
-    this.coordinatesValidation.bind(this, 'longitude')
-  );
-  this.elements.coordinates.latitude.addEventListener(
-    'input',
-    this.coordinatesValidation.bind(this, 'latitude')
-  );
-
   this.elements.title.name = 'title';
-  this.elements.coordinates.name = 'coordinates';
-  this.elements.coordinates.latitude.name = 'latitude';
-  this.elements.coordinates.longitude.name = 'longitude';
   this.elements.description.name = 'description';
   this.elements.photo.name = 'photo';
   this.elements.type.name = 'type';
@@ -101,8 +77,6 @@ Form.prototype.render = async function (parent, data) {
   this.elements.form.append(
     this.elements.formHeader,
     this.elements.title,
-    this.elements.coordinates.longitude,
-    this.elements.coordinates.latitude,
     this.elements.mapContainer,
     this.elements.description,
     this.elements.photo,
@@ -117,8 +91,9 @@ Form.prototype.render = async function (parent, data) {
 
 Form.prototype.editData = function (data) {
   this.elements.title.value = data.title;
-  this.elements.coordinates.latitude.value = data.coordinates.latitude;
-  this.elements.coordinates.longitude.value = data.coordinates.longitude;
+  console.log(this.marker);
+  this.marker.latitude = data.coordinates.latitude;
+  this.marker.longitude = data.coordinates.longitude;
   this.elements.description.value = data.description;
   this.elements.photo.value = data.photo;
   this.elements.type.innerHTML = this.createOptions({
@@ -215,54 +190,6 @@ Form.prototype.handleActionText = function () {
   }
 };
 
-Form.prototype.coordinatesValidation = function (type) {
-  if (type === 'longitude') {
-    const longitude = this.elements.coordinates.longitude.value;
-    const longitudeTemplate = '-?([1]?[0-7]?[0-9](.d+)?|180(.0+)?)';
-    this.elements.coordinates.longitudeErrorMessages =
-      document.createElement('p');
-    this.elements.coordinates.longitudeErrorMessages.classList.add(
-      'newCard__form__coordinates__longError'
-    );
-    this.elements.coordinates.longitudeErrorMessages.innerText =
-      'Довгота повинна бути від -180 до 180';
-
-    if (!longitude.match(longitudeTemplate)) {
-      document
-        .querySelector('.newCard__form__coordinates__longError')
-        ?.remove();
-      this.elements.coordinates.longitude.insertAdjacentElement(
-        'beforebegin',
-        this.elements.coordinates.longitudeErrorMessages
-      );
-    } else {
-      document
-        .querySelector('.newCard__form__coordinates__longError')
-        ?.remove();
-    }
-  } else if (type === 'latitude') {
-    const latitude = this.elements.coordinates.latitude.value;
-    const latitudeTemplate = '-?([1-8]?[0-9](.d+)?|90(.0+)?)';
-    this.elements.coordinates.latitudeErrorMessages =
-      document.createElement('p');
-    this.elements.coordinates.latitudeErrorMessages.classList.add(
-      'newCard__form__coordinates__latError'
-    );
-    this.elements.coordinates.latitudeErrorMessages.innerText =
-      'Широта повинна бути від -90 до 90';
-
-    if (!latitude.match(latitudeTemplate)) {
-      document.querySelector('.newCard__form__coordinates__latError')?.remove();
-      this.elements.coordinates.latitude.insertAdjacentElement(
-        'beforebegin',
-        this.elements.coordinates.latitudeErrorMessages
-      );
-    } else {
-      document.querySelector('.newCard__form__coordinates__latError')?.remove();
-    }
-  }
-};
-
 //navigator.geolocation - перевіряє чи є доступ до геолокації в принципі у браузера
 
 Form.prototype.getUserLocation = function () {
@@ -270,7 +197,7 @@ Form.prototype.getUserLocation = function () {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const newMap = new CreateMap({
+          const newMap = new Map({
             longitude: position.coords.longitude,
             latitude: position.coords.latitude,
             mapContainerID: 'form__mapWrapper__container',
@@ -284,48 +211,29 @@ Form.prototype.getUserLocation = function () {
             longitude: position.coords.longitude,
             latitude: position.coords.latitude,
           });
-          console.log('Latitude: ' + latitude + ', Longitude: ' + longitude);
-          // Тут можна використовувати отримані координати
         },
         async () => {
           console.log(
             'Користувач не надав доступ до данних про місцезнаходження'
           );
           if (confirm('Обрати місце на мапі вручну?')) {
-            const map = new CreateMap({
+            const kyivCoords = {
               longitude: 30.56163,
               latitude: 50.44887,
+            };
+            const map = new Map({
+              longitude: kyivCoords.longitude,
+              latitude: kyivCoords.latitude,
               mapContainerID: 'form__mapWrapper__container',
               customMarkerHTML: mapPointerSVG,
               mapScale: 8,
+              markerDragged: (...allArgs) => this.markerDragged(...allArgs),
             });
             map.render();
-            const mapContainer = document.getElementById(
-              'form__mapWrapper__container'
-            );
-            const clickedCoordinates = await map.getCoordinates();
-            this.elements.coordinates.longitude.value =
-              clickedCoordinates.longitude;
-            this.elements.coordinates.latitude.value =
-              clickedCoordinates.latitude;
-            console.log(clickedCoordinates);
-            const marker = map.addMarker({
-              longitude: this.elements.coordinates.longitude.value,
-              latitude: this.elements.coordinates.latitude.value,
+            map.addMarker({
+              longitude: kyivCoords.longitude,
+              latitude: kyivCoords.latitude,
             });
-            const getCoordAfterDrag = JSON.parse(
-              localStorage.getItem('coordsAfterDrag')
-            );
-            this.elements.coordinates.longitude.value = getCoordAfterDrag[0];
-            this.elements.coordinates.latitude.value = getCoordAfterDrag[1];
-            console.log(this);
-            console.log(getCoordAfterDrag);
-          } else if (confirm('Ну тоді координати потрібно вводити руцями')) {
-            this.elements.mapContainer.remove();
-
-            //TODO: remove this. you don't need it
-            this.elements.coordinates.longitude.style.display = 'block';
-            this.elements.coordinates.latitude.style.display = 'block';
           } else {
             document.querySelector('.modal__wrapper').remove();
             this.elements.form.remove();
@@ -344,6 +252,9 @@ Form.prototype.getUserLocation = function () {
 };
 
 Form.prototype.markerDragged = function (longitude, latitude) {
+  //otyto this.marker ne mae jodnogo dila do this.marker v createMap.
+  //Tyt y this.marker - koordynaty pislya dragu
   this.marker = [longitude, latitude];
   console.log('New Coordinates arrived, suka! - ', this.marker);
+  return this.marker;
 };

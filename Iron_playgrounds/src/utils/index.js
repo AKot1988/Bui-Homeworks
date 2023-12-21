@@ -1,2 +1,2 @@
-export { default as CreateMap } from './CreateMap';
+export { default as Map } from './Map';
 export { default as GenerateMarkers } from './GenerateMarkers';
