@@ -1,6 +1,10 @@
 import { doc, getDoc, getDocs } from 'firebase/firestore';
-import { getStorage, ref } from "firebase/storage";
-import { playgroundCollectionRef, favoritesCollectionRef, storage } from './firebase';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import {
+  playgroundCollectionRef,
+  favoritesCollectionRef,
+  storage,
+} from './firebase';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { Router } from '@/routes';
 
@@ -91,3 +95,27 @@ export const doesCardInFavorites = async function (
     return unCheckedSVG;
   }
 };
+
+export const createReferenceToFile = async function (file) {
+  const playGroundPhotoRef = ref(storage, `playgroundPhotos/${file.name}`);
+  await uploadBytes(playGroundPhotoRef, file).then((snapshot) => {
+    console.log(snapshot);
+    return snapshot;
+  });
+  return playGroundPhotoRef;
+};
+
+export const uploadToStorage = async function (inputID) {
+  const file = document.getElementById(inputID).files[0];
+  const fileRef = await createReferenceToFile(file);
+  console.log('File uploaded');
+  const url = await getDownloadURL(fileRef);
+  return url;
+};
+
+// export const getPhotoURL = async function (inputID) {
+//   const file = document.getElementById(inputID).files[0];
+//   const playGroundPhotoRef = await createReferenceToFile(file);
+//   const url = await getDownloadURL(playGroundPhotoRef);
+//   return url;
+// };

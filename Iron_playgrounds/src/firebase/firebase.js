@@ -19,7 +19,6 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
 export const storageRef = ref(storage);
-console.log(storageRef);
 export const playgroundCollectionRef = collection(db, 'playgrounds');
 export const favoritesCollectionRef = collection(db, 'favorites');
 export const googleAuthProvider = new GoogleAuthProvider();

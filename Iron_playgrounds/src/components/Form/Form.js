@@ -4,6 +4,7 @@ import { addDoc, updateDoc, doc } from 'firebase/firestore';
 import { Map } from '@/utils';
 import { Router } from '@/routes';
 import { playgroundCollectionRef } from '@/firebase/firebase.js';
+import { uploadToStorage } from '@/firebase/API.js';
 import { getAuth } from 'firebase/auth';
 import { mapPointerSVG } from '@/assets/images/svg/svg.js';
 
@@ -20,7 +21,8 @@ export default function Form({ type = 'create', afterSubmit }) {
     'Загальний майданчик для спортіків і дітей',
     'Крaще це, чим нічого',
   ];
-  this.marker = [];
+  this.receivedCoord = [];
+  this.photoRef = null;
   this.elements = {
     form: document.createElement('form'),
     formHeader: document.createElement('h2'),
@@ -48,6 +50,7 @@ Form.prototype.render = async function (parent, data) {
 
   this.elements.description.classList.add('newCard__form__description__input');
   this.elements.photo.classList.add('newCard__form__photo__input');
+  this.elements.photo.id = 'photo__input';
   this.elements.type.classList.add('newCard__form__type__select');
   this.elements.rate.classList.add('newCard__form__rate__select');
   this.elements.formHeader.innerText =
@@ -55,7 +58,17 @@ Form.prototype.render = async function (parent, data) {
   this.elements.title.placeholder = 'Дай назву майданчику';
 
   this.elements.description.placeholder = 'Опиши плюси і мінуси майданчика';
-  this.elements.photo.placeholder = 'Прикріпи фото тут';
+  // this.elements.photo.innerText = 'Прикріпи фото тут';
+  this.elements.photo.type = 'file';
+  this.elements.photo.addEventListener('change', async (ev) => {
+    const file = ev.target.files[0];
+    if (file) {
+      this.photoRef = await uploadToStorage('photo__input');
+      console.log(this);
+    } else {
+      console.log('no file');
+    }
+  });
 
   if (data) {
     this.editData(data);
@@ -70,7 +83,6 @@ Form.prototype.render = async function (parent, data) {
 
   this.elements.title.name = 'title';
   this.elements.description.name = 'description';
-  this.elements.photo.name = 'photo';
   this.elements.type.name = 'type';
   this.elements.rate.name = 'rate';
 
@@ -94,8 +106,9 @@ Form.prototype.editData = function (data) {
   console.log(this.receivedCoord);
   this.receivedCoord.latitude = data.coordinates.latitude;
   this.receivedCoord.longitude = data.coordinates.longitude;
+  console.log(this.receivedCoord);
   this.elements.description.value = data.description;
-  this.elements.photo.value = data.photo;
+  this.elements.photoURL = data.photo;
   this.elements.type.innerHTML = this.createOptions({
     optionsSet: this.typeOptions,
     type: 'edit',
@@ -153,19 +166,24 @@ Form.prototype.handleFormAction = async function (e) {
   const ironCardData = {
     title: formData.get('title'),
     author: Router.user.uid,
-    //поправити координати і брати їх не з інпуів, а з мапи після драгу
     coordinates: {
-      longitude: lng,
-      latitude: lat,
+      longitude: this.receivedCoord,
+      latitude: this.receivedCoord,
     },
     description: formData.get('description'),
-    photo: formData.get('photo'),
+    photo: this.photoRef,
     type: formData.get('type'),
     rate: formData.get('rate'),
   };
+  console.log(ironCardData);
   switch (this.type) {
     case 'edit':
       const cardForUpdDock = doc(playgroundCollectionRef, this.id);
+      console.log(this.receivedCoord);
+      ironCardData.photo = this.elements.photoURL;
+      ironCardData.coordinates.longitude = this.receivedCoord.longitude;
+      ironCardData.coordinates.latitude = this.receivedCoord.latitude;
+      console.log(ironCardData);
       await updateDoc(cardForUpdDock, { ...ironCardData });
       break;
     case 'create':
@@ -189,8 +207,6 @@ Form.prototype.handleActionText = function () {
       throw TypeError('Wrong form type - ' + this.type);
   }
 };
-
-//navigator.geolocation - перевіряє чи є доступ до геолокації в принципі у браузера
 
 Form.prototype.getUserLocation = function () {
   new Promise(() => {

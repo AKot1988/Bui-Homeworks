@@ -56,8 +56,6 @@ Map.prototype.addMarker = function ({ longitude, latitude }) {
   this.marker = new mapboxgl.Marker({ draggable: this.markerDraggable })
     .setLngLat(this.coordArray)
     .addTo(this.map);
-  console.log(this.marker);
-  // tyt this.marker - tse ob'ekt y jakomy lezyt' instans mapboxgl.Marker
   this.marker.on('dragend', () => {
     const { lng, lat } = this.marker.getLngLat();
     this.markerDragged(lng, lat);
