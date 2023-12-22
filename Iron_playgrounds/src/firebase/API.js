@@ -1,5 +1,6 @@
 import { doc, getDoc, getDocs } from 'firebase/firestore';
-import { playgroundCollectionRef, favoritesCollectionRef } from './firebase';
+import { getStorage, ref } from "firebase/storage";
+import { playgroundCollectionRef, favoritesCollectionRef, storage } from './firebase';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { Router } from '@/routes';
 

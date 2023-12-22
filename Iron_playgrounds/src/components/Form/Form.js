@@ -91,9 +91,9 @@ Form.prototype.render = async function (parent, data) {
 
 Form.prototype.editData = function (data) {
   this.elements.title.value = data.title;
-  console.log(this.marker);
-  this.marker.latitude = data.coordinates.latitude;
-  this.marker.longitude = data.coordinates.longitude;
+  console.log(this.receivedCoord);
+  this.receivedCoord.latitude = data.coordinates.latitude;
+  this.receivedCoord.longitude = data.coordinates.longitude;
   this.elements.description.value = data.description;
   this.elements.photo.value = data.photo;
   this.elements.type.innerHTML = this.createOptions({
@@ -147,7 +147,7 @@ Form.prototype.handleFormAction = async function (e) {
   e.preventDefault();
   // const lng = this.marker[0]
   // const lat = this.marker[1]
-  const [lng, lat] = this.marker;
+  const [lng, lat] = this.receivedCoord;
 
   const formData = new FormData(this.elements.form);
   const ironCardData = {
@@ -252,9 +252,7 @@ Form.prototype.getUserLocation = function () {
 };
 
 Form.prototype.markerDragged = function (longitude, latitude) {
-  //otyto this.marker ne mae jodnogo dila do this.marker v createMap.
-  //Tyt y this.marker - koordynaty pislya dragu
-  this.marker = [longitude, latitude];
-  console.log('New Coordinates arrived, suka! - ', this.marker);
-  return this.marker;
+  this.receivedCoord = [longitude, latitude];
+  console.log('New Coordinates arrived, suka! - ', this.receivedCoord);
+  return this.receivedCoord;
 };
