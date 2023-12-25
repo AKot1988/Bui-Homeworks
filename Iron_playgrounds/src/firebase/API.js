@@ -9,11 +9,6 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { Router } from '@/routes';
 
 export const auth = getAuth();
-// console.log(Router.user);
-// const userID = onAuthStateChanged(auth, (user) => {
-//   console.log(user.uid);
-// });
-// console.log(userID);
 
 export const getAllPlaygrounds = async () => {
   const responseSnapShot = await getDocs(playgroundCollectionRef);
@@ -70,15 +65,6 @@ export const getFavorites = async () => {
   })); //
 };
 
-// export const userIDCardList = async () => {
-//   const favArray = await getFavorites();
-//   const favIDArray = [];
-//   favArray.forEach((data) => {
-//     favIDArray.push(data.id);
-//   });
-//   return favIDArray;
-// };
-
 export const doesCardInFavorites = async function (
   id,
   unCheckedSVG,
@@ -99,7 +85,6 @@ export const doesCardInFavorites = async function (
 export const createReferenceToFile = async function (file) {
   const playGroundPhotoRef = ref(storage, `playgroundPhotos/${file.name}`);
   await uploadBytes(playGroundPhotoRef, file).then((snapshot) => {
-    console.log(snapshot);
     return snapshot;
   });
   return playGroundPhotoRef;
@@ -108,14 +93,6 @@ export const createReferenceToFile = async function (file) {
 export const uploadToStorage = async function (inputID) {
   const file = document.getElementById(inputID).files[0];
   const fileRef = await createReferenceToFile(file);
-  console.log('File uploaded');
   const url = await getDownloadURL(fileRef);
   return url;
 };
-
-// export const getPhotoURL = async function (inputID) {
-//   const file = document.getElementById(inputID).files[0];
-//   const playGroundPhotoRef = await createReferenceToFile(file);
-//   const url = await getDownloadURL(playGroundPhotoRef);
-//   return url;
-// };

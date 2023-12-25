@@ -65,7 +65,6 @@ Form.prototype.render = async function (parent, data) {
     const file = ev.target.files[0];
     if (file) {
       this.changedPhotoRef = await uploadToStorage('photo__input');
-      console.log(this);
     } else {
       console.log('no file');
     }
@@ -160,12 +159,10 @@ Form.prototype.handleFormAction = async function (e) {
   e.preventDefault();
   const formData = new FormData(this.elements.form);
 
-  const ironCardData = this.getCardDataToSubmit(formData);
-
+  const ironCardData = await this.getCardDataToSubmit(formData);
   switch (this.type) {
     case 'edit':
       const cardForUpdDock = doc(playgroundCollectionRef, this.id);
-
       await updateDoc(cardForUpdDock, { ...ironCardData });
       break;
     case 'create':
@@ -195,6 +192,10 @@ Form.prototype.getUserLocation = function () {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
+          this.receivedCoord = [
+            position.coords.longitude,
+            position.coords.latitude,
+          ];
           const longitude =
             this.type === 'create'
               ? position.coords.longitude
@@ -212,16 +213,12 @@ Form.prototype.getUserLocation = function () {
           });
 
           newMap.render();
-
           newMap.addMarker({
             longitude,
             latitude,
           });
         },
         async () => {
-          console.log(
-            'Користувач не надав доступ до данних про місцезнаходження'
-          );
           if (confirm('Обрати місце на мапі вручну?')) {
             const kyivCoords = {
               longitude: 30.56163,
@@ -263,8 +260,8 @@ Form.prototype.markerDragged = function (longitude, latitude) {
   return this.receivedCoord;
 };
 
-Form.prototype.getCardDataToSubmit = function (formData) {
-  const result = {};
+Form.prototype.getCardDataToSubmit = async function (formData) {
+  let result = {};
   if (this.type === 'create') {
     result = {
       title: formData.get('title'),
@@ -274,7 +271,7 @@ Form.prototype.getCardDataToSubmit = function (formData) {
         latitude: this.receivedCoord[1],
       },
       description: formData.get('description'),
-      photo: this.changedPhotoRef,
+      photo: await this.changedPhotoRef,
       type: formData.get('type'),
       rate: formData.get('rate'),
     };
@@ -286,7 +283,7 @@ Form.prototype.getCardDataToSubmit = function (formData) {
     if (this.data.description !== formData.get('description')) {
       result.description = formData.get('description');
     }
-    debugger;
+
     if (this.changedPhotoRef !== null) {
       result.photo = this.changedPhotoRef;
     }
