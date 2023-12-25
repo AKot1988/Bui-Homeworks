@@ -11,6 +11,7 @@ import { mapPointerSVG } from '@/assets/images/svg/svg.js';
 const auth = getAuth();
 
 export default function Form({ type = 'create', afterSubmit }) {
+  this.data = null;
   this.type = type;
   this.addToFavorite = false;
   this.author = auth.currentUser.uid;
@@ -22,7 +23,7 @@ export default function Form({ type = 'create', afterSubmit }) {
     'Крaще це, чим нічого',
   ];
   this.receivedCoord = [];
-  this.photoRef = null;
+  this.changedPhotoRef = null;
   this.elements = {
     form: document.createElement('form'),
     formHeader: document.createElement('h2'),
@@ -63,7 +64,7 @@ Form.prototype.render = async function (parent, data) {
   this.elements.photo.addEventListener('change', async (ev) => {
     const file = ev.target.files[0];
     if (file) {
-      this.photoRef = await uploadToStorage('photo__input');
+      this.changedPhotoRef = await uploadToStorage('photo__input');
       console.log(this);
     } else {
       console.log('no file');
@@ -102,13 +103,13 @@ Form.prototype.render = async function (parent, data) {
 };
 
 Form.prototype.editData = function (data) {
+  this.id = data.id;
+  this.data = data;
+
+  this.receivedCoord = [data.coordinates.longitude, data.coordinates.latitude];
+
   this.elements.title.value = data.title;
-  console.log(this.receivedCoord);
-  this.receivedCoord.latitude = data.coordinates.latitude;
-  this.receivedCoord.longitude = data.coordinates.longitude;
-  console.log(this.receivedCoord);
   this.elements.description.value = data.description;
-  this.elements.photoURL = data.photo;
   this.elements.type.innerHTML = this.createOptions({
     optionsSet: this.typeOptions,
     type: 'edit',
@@ -119,7 +120,6 @@ Form.prototype.editData = function (data) {
     type: 'edit',
     value: data.rate,
   });
-  this.id = data.id;
 };
 
 Form.prototype.createOptions = function ({
@@ -158,32 +158,14 @@ Form.prototype.createOptions = function ({
 
 Form.prototype.handleFormAction = async function (e) {
   e.preventDefault();
-  // const lng = this.marker[0]
-  // const lat = this.marker[1]
-  const [lng, lat] = this.receivedCoord;
-
   const formData = new FormData(this.elements.form);
-  const ironCardData = {
-    title: formData.get('title'),
-    author: Router.user.uid,
-    coordinates: {
-      longitude: this.receivedCoord,
-      latitude: this.receivedCoord,
-    },
-    description: formData.get('description'),
-    photo: this.photoRef,
-    type: formData.get('type'),
-    rate: formData.get('rate'),
-  };
-  console.log(ironCardData);
+
+  const ironCardData = this.getCardDataToSubmit(formData);
+
   switch (this.type) {
     case 'edit':
       const cardForUpdDock = doc(playgroundCollectionRef, this.id);
-      console.log(this.receivedCoord);
-      ironCardData.photo = this.elements.photoURL;
-      ironCardData.coordinates.longitude = this.receivedCoord.longitude;
-      ironCardData.coordinates.latitude = this.receivedCoord.latitude;
-      console.log(ironCardData);
+
       await updateDoc(cardForUpdDock, { ...ironCardData });
       break;
     case 'create':
@@ -213,9 +195,17 @@ Form.prototype.getUserLocation = function () {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
+          const longitude =
+            this.type === 'create'
+              ? position.coords.longitude
+              : this.data.coordinates.longitude;
+          const latitude =
+            this.type === 'create'
+              ? position.coords.latitude
+              : this.data.coordinates.latitude;
           const newMap = new Map({
-            longitude: position.coords.longitude,
-            latitude: position.coords.latitude,
+            longitude,
+            latitude,
             mapContainerID: 'form__mapWrapper__container',
             customMarkerHTML: mapPointerSVG,
             markerDragged: (...allArgs) => this.markerDragged(...allArgs),
@@ -224,8 +214,8 @@ Form.prototype.getUserLocation = function () {
           newMap.render();
 
           newMap.addMarker({
-            longitude: position.coords.longitude,
-            latitude: position.coords.latitude,
+            longitude,
+            latitude,
           });
         },
         async () => {
@@ -269,6 +259,54 @@ Form.prototype.getUserLocation = function () {
 
 Form.prototype.markerDragged = function (longitude, latitude) {
   this.receivedCoord = [longitude, latitude];
-  console.log('New Coordinates arrived, suka! - ', this.receivedCoord);
+
   return this.receivedCoord;
+};
+
+Form.prototype.getCardDataToSubmit = function (formData) {
+  const result = {};
+  if (this.type === 'create') {
+    result = {
+      title: formData.get('title'),
+      author: Router.user.uid,
+      coordinates: {
+        longitude: this.receivedCoord[0],
+        latitude: this.receivedCoord[1],
+      },
+      description: formData.get('description'),
+      photo: this.changedPhotoRef,
+      type: formData.get('type'),
+      rate: formData.get('rate'),
+    };
+  } else if (this.type === 'edit') {
+    if (this.data.title !== formData.get('title')) {
+      //якшо в інпуті лежить шось, що НЕ дорівнює даним із бази - тре записать це в result, щоб оновити дані в базі пісял сабміту
+      result.title = formData.get('title');
+    }
+    if (this.data.description !== formData.get('description')) {
+      result.description = formData.get('description');
+    }
+    debugger;
+    if (this.changedPhotoRef !== null) {
+      result.photo = this.changedPhotoRef;
+    }
+    if (
+      this.data.coordinates.longitude !== this.receivedCoord[0] ||
+      this.data.coordinates.latitude !== this.receivedCoord[1]
+    ) {
+      result.coordinates = {
+        longitude: this.receivedCoord[0],
+        latitude: this.receivedCoord[1],
+      };
+    }
+    if (this.data.type !== formData.get('type')) {
+      result.type = formData.get('type');
+    }
+    if (this.data.rate !== formData.get('rate')) {
+      result.rate = formData.get('rate');
+    }
+  } else {
+    throw new TypeError(`Unexpected form type: ${this.type}`);
+  }
+  return result;
 };
