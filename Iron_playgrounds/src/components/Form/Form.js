@@ -166,6 +166,7 @@ Form.prototype.handleFormAction = async function (e) {
       await updateDoc(cardForUpdDock, { ...ironCardData });
       break;
     case 'create':
+      console.log(ironCardData);
       await addDoc(playgroundCollectionRef, ironCardData);
       break;
     default:
@@ -220,13 +221,13 @@ Form.prototype.getUserLocation = function () {
         },
         async () => {
           if (confirm('Обрати місце на мапі вручну?')) {
-            const kyivCoords = {
+            this.kyivCoords = {
               longitude: 30.56163,
               latitude: 50.44887,
             };
             const map = new Map({
-              longitude: kyivCoords.longitude,
-              latitude: kyivCoords.latitude,
+              longitude: this.kyivCoords.longitude,
+              latitude: this.kyivCoords.latitude,
               mapContainerID: 'form__mapWrapper__container',
               customMarkerHTML: mapPointerSVG,
               mapScale: 8,
@@ -234,8 +235,8 @@ Form.prototype.getUserLocation = function () {
             });
             map.render();
             map.addMarker({
-              longitude: kyivCoords.longitude,
-              latitude: kyivCoords.latitude,
+              longitude: this.kyivCoords.longitude,
+              latitude: this.kyivCoords.latitude,
             });
           } else {
             document.querySelector('.modal__wrapper').remove();
@@ -263,21 +264,32 @@ Form.prototype.markerDragged = function (longitude, latitude) {
 Form.prototype.getCardDataToSubmit = async function (formData) {
   let result = {};
   if (this.type === 'create') {
+    console.log(this.receivedCoord[0]);
+    debugger;
     result = {
       title: formData.get('title'),
       author: Router.user.uid,
-      coordinates: {
-        longitude: this.receivedCoord[0],
-        latitude: this.receivedCoord[1],
-      },
       description: formData.get('description'),
       photo: await this.changedPhotoRef,
       type: formData.get('type'),
       rate: formData.get('rate'),
     };
+    if (
+      this.receivedCoord[0] !== undefined &&
+      this.receivedCoord[1] !== undefined
+    ) {
+      result.coordinates = {
+        longitude: this.receivedCoord[0],
+        latitude: this.receivedCoord[1],
+      };
+    } else {
+      result.coordinates = {
+        longitude: this.kyivCoords.longitude,
+        latitude: this.kyivCoords.latitude,
+      };
+    }
   } else if (this.type === 'edit') {
     if (this.data.title !== formData.get('title')) {
-      //якшо в інпуті лежить шось, що НЕ дорівнює даним із бази - тре записать це в result, щоб оновити дані в базі пісял сабміту
       result.title = formData.get('title');
     }
     if (this.data.description !== formData.get('description')) {

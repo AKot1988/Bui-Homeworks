@@ -1,6 +1,7 @@
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import { Router, ROUTES_NAMES } from '@/routes';
 import { getFavorites } from './firebase/API';
+import { styleChange } from './styleChange';
 
 Router.navigate(ROUTES_NAMES.home);
 
@@ -12,3 +13,5 @@ onAuthStateChanged(auth, (user) => {
     getFavorites();
   }
 });
+
+styleChange();

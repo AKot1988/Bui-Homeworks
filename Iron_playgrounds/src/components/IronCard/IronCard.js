@@ -63,7 +63,7 @@ IronCard.prototype.render = async function (parent, isEditable = false) {
   this.elements.ankerLinkLocation.target = '_blank';
   this.elements.ankerLinkLocation.href = `https://www.google.com/maps/search/?api=1&query=${this.data.coordinates?.latitude},${this.data.coordinates?.longitude}`;
   this.elements.ankerLinkLocation.innerHTML = locationSVG;
-  this.elements.favSVG.onclick = () => this.changeFavoritesStatus();
+  this.elements.favSVG.onclick = (e) => this.changeFavoritesStatus(e);
   this.elements.ankerLinkLocation.onclick = (event) => {
     event.stopPropagation();
   };
@@ -168,7 +168,8 @@ IronCard.prototype.deleteCard = async function () {
   }
 };
 
-IronCard.prototype.changeFavoritesStatus = async function () {
+IronCard.prototype.changeFavoritesStatus = async function (e) {
+  e.stopPropagation();
   const selectedCardDocumentReference = doc(
     playgroundCollectionRef,
     this.data.id
@@ -191,6 +192,7 @@ IronCard.prototype.changeFavoritesStatus = async function () {
     userFavDocRefArray.push(selectedCardDocumentReference);
     await updateDoc(userFavoritesRef, { list: userFavDocRefArray });
   }
+  Router.navigate(ROUTES_NAMES.places);
 };
 
 IronCard.prototype.checkFavoritesStatus = async function () {

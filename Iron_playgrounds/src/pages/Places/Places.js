@@ -8,9 +8,11 @@ import {
 import IronCard from '@/components/IronCard/IronCard';
 import Form from '@/components/Form/Form';
 import Modal from '@/components/Modal/Modal';
+import { Router, ROUTES_NAMES } from '@/routes';
 import './Places.scss';
 
-export default function PlacesPage() {''
+export default function PlacesPage() {
+  '';
   this.filterOptions = [
     'Всі майданчики',
     'Мої майданчики',
@@ -86,7 +88,9 @@ PlacesPage.prototype.render = async function (parent) {
 PlacesPage.prototype.handleAdd = function (e) {
   const newForm = new Form({
     type: 'create',
-    afterSubmit: () => this.modal.close(),
+    afterSubmit: () => {
+      this.modal.close(), Router.navigate(ROUTES_NAMES.places);
+    },
   });
 
   this.modal.render(this.elements.wrapper, newForm);

@@ -7,11 +7,6 @@
   width: 100vw;
   margin: auto;
   height: calc(100vh - var(--footer-height) - var(--header-height));
-  background-image: url('@/assets/images/content_img/20230428_151154.JPG');
-  background-size: cover;
-  background-position-y: -300px;
-  // max-width: 1280px;
-  // align-items: stretch;
   gap: 20px;
   flex-wrap: wrap;
 
@@ -20,7 +15,7 @@
     @include flex(start, center, column);
     padding: var(--padding-main);
     gap: var(--gap-main);
-    max-width: 500px;
+    width: 500px;
     height: 600px;
     background-color: var(--basic-background-blur-color);
     border-radius: 10px;
@@ -45,14 +40,4 @@
     );
     color: var(--basic-text-color);
   }
-
-  //  {
-  //   @include flex(start, center, column);
-  //   padding: var(--padding-main);
-  //   gap: var(--gap-main);
-  //   width: 500px;
-  //   height: 600px;
-  //   background-color: var(--basic-background-blur-color);
-  //   border-radius: 10px;
-  // }
 }
