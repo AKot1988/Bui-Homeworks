@@ -15,8 +15,12 @@
     height: 600px;
     margin-top: 100px;
     background-color: var(--basic-background-blur-color);
+    padding: 10px;
 
     border-radius: 15px;
+  }
+
+  &__card-wrapper .iron-card:hover {
   }
 
   &__map {

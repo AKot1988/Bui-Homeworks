@@ -10,11 +10,11 @@
   margin: 0 auto;
 
   &__mapWrapper {
-    width: 100%;
+    width: 90%;
     height: 600px;
     margin-top: 30px;
     background-color: var(--basic-background-blur-color);
-
+    box-shadow: 15px 15px 5px var(--shadow-color);
     border-radius: 15px;
   }
 

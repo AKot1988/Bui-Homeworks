@@ -1,13 +1,15 @@
 :root {
   // --------------------------colors-------------------------------
-  --basic-decore-color: hsl(188, 48%, 50%);
-  --secondary-decore-color: #426ebd;
-  --third-decore-color: #42bd91;
+  --basic-decore-color: #c0c0c0;
+  --secondary-decore-color: #777777;
+  --third-decore-color: #e5e4e2;
 
-  --basic-text-color: #150089;
-  --secondary-text-color: #5d0077;
+  --basic-text-color: #565460;
+  --secondary-text-color: #326876;
 
-  --basic-background-blur-color: hsl(188, 48%, 50%);
+  --basic-background-blur-color: #e5e4e2;
+
+  --shadow-color: #bababa;
 
   //---------------------------sizes----------------------------------
   --headers1-font-size: 32px;

@@ -1,5 +1,4 @@
 import Button from '@/components/Button/Button';
-import Footer from '@/components/Footer/Footer';
 import {
   getAllPlaygrounds,
   getAllPlaygroundsByUser,

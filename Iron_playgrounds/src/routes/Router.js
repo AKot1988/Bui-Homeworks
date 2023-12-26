@@ -47,8 +47,6 @@ const Router = {
     this.contentContainer.replaceChildren();
 
     this.currentPage.render(this.contentContainer);
-
-    this.footer.render(this.footerContainer);
   },
 
   changeAuth(user) {
@@ -58,6 +56,7 @@ const Router = {
     } else {
       this.header.renderLoggedOut(this.headerContainer);
     }
+    this.footer.render(this.footerContainer);
   },
 };
 

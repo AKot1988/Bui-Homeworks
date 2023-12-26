@@ -24,6 +24,20 @@
   &__home,
   &__map,
   &__my-places,
+  &__button {
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      // position: relative;
+      // z-index: 2;
+      // box-shadow: 10px 15px 5px rgb(186, 186, 186);
+      scale: 1.15;
+    }
+  }
+
+  &__home,
+  &__map,
+  &__my-places,
   &__user-photo,
   &__button {
     width: 100px;

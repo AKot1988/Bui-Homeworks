@@ -1,6 +1,4 @@
 import { getAllPlaygrounds } from '@/firebase';
-
-import Footer from '@/components/Footer/Footer';
 import IronCard from '@/components/IronCard/IronCard.js';
 
 import '@/scss/main.scss';
@@ -65,6 +63,7 @@ Home.prototype.handleCarousel = function (collection) {
 
   if (!this.interval) {
     this.interval = setInterval(() => {
+      console.log(this.currentSlideIndex);
       if (
         collection.length === 1 ||
         this.currentSlideIndex >= collection.length - 1

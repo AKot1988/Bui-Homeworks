@@ -28,7 +28,7 @@ Footer.prototype.render = function (parent) {
 
   this.elements.youtube.href = 'https://www.youtube.com/@kulibabenko';
   this.elements.instagram.href = 'https://www.instagram.com/kulibabenko/';
-  this.elements.monobank.href = 'https://send.monobank.ua/jar/5vjnd7Q1Rx';
+  this.elements.monobank.href = 'https://send.monobank.ua/jar/2JmA7TAAKC';
 
   this.elements.youtube.innerHTML = YOUTUBE_LOGO;
   this.elements.instagram.innerHTML = INSTAGRAM_LOGO;
