@@ -42,6 +42,8 @@ const Router = {
       this.pages[route] = this.pages[route] || null;
     }
 
+    this.currentPage?.unmount?.()
+
     this.currentPage = this.pages[route];
 
     this.contentContainer.replaceChildren();

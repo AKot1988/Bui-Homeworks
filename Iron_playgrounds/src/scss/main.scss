@@ -3,6 +3,21 @@
 @import './mixins.scss';
 @import './common.scss';
 
+*::-webkit-scrollbar {
+  width: 0.5em;
+}
+
+*::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: var(--secondary-decore-color);
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: var(--shadow-color);
+  outline: 1px solid var(--secondary-text-color);
+}
+
 * {
   font-family: var(--headers-font-family);
   animation: global;

@@ -17,6 +17,8 @@ export default function Home() {
 }
 
 Home.prototype.render = async function (parent) {
+  this.currentSlideIndex = 0;
+
   this.elements.wrapper.classList.add('hero-section');
   this.elements.descriptionWrapper.classList.add(
     'hero-section__description__wrapper'
@@ -45,9 +47,6 @@ Home.prototype.render = async function (parent) {
   );
   parent.append(this.elements.wrapper);
 
-  //TODO: handle properly slides switching. Interval causing occasions with double render
-  this.interval && clearInterval(this.interval);
-
   this.elements.carouselWrapper.replaceChildren();
   const ironPlaygroundsCollection = await getAllPlaygrounds();
 
@@ -60,6 +59,7 @@ Home.prototype.handleCarousel = function (collection) {
   firstIronCard.render(this.elements.carouselWrapper);
 
   this.prevSlide = firstIronCard;
+  this.currentSlideIndex++;
 
   if (!this.interval) {
     this.interval = setInterval(() => {
@@ -80,4 +80,10 @@ Home.prototype.handleCarousel = function (collection) {
       this.prevSlide = newIronCard;
     }, 3000);
   }
+};
+
+Home.prototype.unmount = function () {
+  console.log('Home.prototype.unmount has been called');
+  clearInterval(this.interval);
+  this.interval = null;
 };

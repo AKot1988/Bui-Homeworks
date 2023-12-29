@@ -6,9 +6,6 @@
   @include flex(start, space-between, column);
   gap: var(--gap-main);
   
-
-  
-
   &__photo {
     width: 100%;
     border-radius: 20px;
