@@ -3,7 +3,7 @@ import {
   INSTAGRAM_LOGO,
   PIGGY_LOGO,
 } from '@/assets/images/svg/svg';
-import './Footer.scss';
+import './footer.scss';
 
 export default function Footer() {
   this.elements = {
