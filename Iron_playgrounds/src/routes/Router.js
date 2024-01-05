@@ -1,6 +1,6 @@
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
 
-import { Home, LoginPage, PlacesPage, SingleCardPage, MapPage } from '@/pages';
+import { Home, PlacesPage, SingleCardPage, MapPage } from '@/pages';
 import { Header, Footer } from '@/components';
 
 import { ROUTES_NAMES } from './helper';
@@ -17,7 +17,6 @@ const Router = {
   user: null,
   pages: {
     [ROUTES_NAMES.home]: new Home(),
-    [ROUTES_NAMES.login]: new LoginPage(),
     [ROUTES_NAMES.places]: new PlacesPage(),
     [ROUTES_NAMES.map]: new MapPage(),
     [ROUTES_NAMES.singleCard]: null,
