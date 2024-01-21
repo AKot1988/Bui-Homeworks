@@ -38,12 +38,17 @@ export const collection = [
 
 export const options = {
   headers: [
-    { name: 'date', title: 'Date', sort: false },
+    {
+      name: 'date',
+      title: 'Date',
+      sortBy: true,
+      sort: (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+    },
     { name: 'type', title: 'Type', sort: false },
     {
       name: 'amount',
       title: 'Amount',
-      sortBy: true,
+      sortBy: false,
       sort: (a, b) => Number(b.amount) - Number(a.amount),
     },
   ],

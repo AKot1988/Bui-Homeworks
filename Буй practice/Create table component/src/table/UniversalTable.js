@@ -6,10 +6,15 @@ export default function UniversalTable(collection, options = [{}]) {
   this.tableBody = null;
   this.collection = collection;
   this.options = options;
+  this.emptyCellValue = ''
   this.sortingHeader = options.headers.find(
     ({ sortBy, sort }) => sortBy && sort
   );
-  // this.collection = collection.sort(this.sortingHeader.sort);
+  if (!this.sortingHeader) {
+    throw new TypeError('No header found matching sorting header criteria!');
+  }
+
+  this.collection = collection.sort(this.sortingHeader.sort);
 
   if (
     (!this.options.deletable && this.options.onDelete) ||
@@ -40,9 +45,9 @@ UniversalTable.prototype.render = function (parent) {
   });
   const tableHeaderRow = new createElement({
     tagName: 'li',
-    // onClick: (event) => {
-    //   this.sortByHEaderRow(event);
-    // },
+    onClick: (event) => {
+      this.sortByHeaderRow(event);
+    },
     className: [this.classes.row],
   });
 
